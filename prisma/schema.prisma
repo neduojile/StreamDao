@@ -84,6 +84,7 @@ model MiningTask {
   instructions      String   @db.Text
   taskLink          String?
     sharePlatform String?
+  shareMessage  String?  @db.Text
   category          String   @default("REGULAR")
   reward            Decimal  @db.Decimal(18, 2)
   minDurationSeconds Int      @default(30)

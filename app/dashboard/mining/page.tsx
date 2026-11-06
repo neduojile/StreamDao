@@ -9,7 +9,8 @@ type Task = {
   description: string;
   instructions: string;
   taskLink: string | null;
-  sharePlatform: "WHATSAPP" | "FACEBOOK" | "SNAPCHAT" | "INSTAGRAM" | null;
+  sharePlatform: "WHATSAPP" | "FACEBOOK" | null;
+  shareMessage: string | null;
   category: "REGULAR" | "SPONSORED";
   reward: string;
   totalCompletions: number;
@@ -73,7 +74,7 @@ export default function MiningPage() {
 
     const sponsored = task.category === "SPONSORED";
     const platform = task.sharePlatform;
-    const message = `${task.title}\n\n${task.description}`;
+    const message = `${task.shareMessage?.trim() || `${task.title}\n\n${task.description}`}\n\n${task.taskLink || ""}`;
 
     let destination = "";
 
@@ -82,7 +83,7 @@ export default function MiningPage() {
     } else if (sponsored && platform === "WHATSAPP") {
       destination = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     } else if (sponsored && platform === "FACEBOOK") {
-      destination = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}&quote=${encodeURIComponent(message)}`;
+      destination = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(task.taskLink || window.location.origin)}&quote=${encodeURIComponent(task.shareMessage?.trim() || `${task.title}\n\n${task.description}`)}`;
     }
 
     // Open the real destination immediately to avoid popup blocking.
@@ -125,7 +126,7 @@ export default function MiningPage() {
         return;
       }
 
-      if (sponsored && (platform === "INSTAGRAM" || platform === "SNAPCHAT")) {
+      if (false) {
         try {
           if (navigator.share) {
             await navigator.share({
@@ -138,7 +139,7 @@ export default function MiningPage() {
             setNotice("Message copied. Paste it into your selected social app. Your timer is running.");
           }
         } catch (shareError) {
-          if (shareError instanceof Error && shareError.name === "AbortError") {
+          if (false) {
             setNotice("Share cancelled. Your timer is still running.");
           } else {
             setNotice("Your timer is running. Open your selected app to share the message.");

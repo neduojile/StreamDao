@@ -9,7 +9,8 @@ type MiningTask = {
   description: string;
   instructions: string;
   taskLink: string | null;
-  sharePlatform: "WHATSAPP" | "FACEBOOK" | "SNAPCHAT" | "INSTAGRAM" | null;
+  shareMessage: string | null;
+  sharePlatform: "WHATSAPP" | "FACEBOOK" | null;
   category: "REGULAR" | "SPONSORED";
   reward: number | string;
   minDurationSeconds: number;
@@ -27,7 +28,8 @@ type TaskForm = {
   description: string;
   instructions: string;
   taskLink: string;
-  sharePlatform: "WHATSAPP" | "FACEBOOK" | "SNAPCHAT" | "INSTAGRAM";
+  shareMessage: string;
+  sharePlatform: "WHATSAPP" | "FACEBOOK";
   category: "REGULAR" | "SPONSORED";
   reward: string;
   minDurationSeconds: string;
@@ -38,6 +40,7 @@ const emptyForm: TaskForm = {
   description: "",
   instructions: "",
   taskLink: "",
+  shareMessage: "",
   sharePlatform: "WHATSAPP",
   category: "REGULAR",
   reward: "",
@@ -120,6 +123,7 @@ export default function MiningTasksPage() {
       description: task.description,
       instructions: task.instructions,
       taskLink: task.taskLink || "",
+      shareMessage: task.shareMessage || "",
       sharePlatform: task.sharePlatform || "WHATSAPP",
       category: task.category,
       reward: String(task.reward),
@@ -140,7 +144,8 @@ export default function MiningTasksPage() {
       ...form,
       reward: Number(form.reward),
       minDurationSeconds: Number(form.minDurationSeconds),
-      taskLink: form.category === "REGULAR" ? form.taskLink.trim() : "",
+      taskLink: form.taskLink.trim(),
+      shareMessage: form.category === "SPONSORED" ? form.shareMessage.trim() : null,
       sharePlatform: form.category === "SPONSORED" ? form.sharePlatform : null,
     };
 
@@ -390,18 +395,34 @@ export default function MiningTasksPage() {
                   </label>
                 </div>
 
-                {form.category === "REGULAR" ? (
-                  <label>
-                    Task destination link
-                    <input
-                      type="url"
-                      required
-                      value={form.taskLink}
-                      onChange={(e) => updateField("taskLink", e.target.value)}
-                      placeholder="https://example.com/task"
-                    />
-                  </label>
-                ) : (
+                <label>
+                  {form.category === "SPONSORED" ? "Promotional link to share" : "Task destination link"}
+                  <input
+                    type="url"
+                    required
+                    value={form.taskLink}
+                    onChange={(e) => updateField("taskLink", e.target.value)}
+                    placeholder={form.category === "SPONSORED" ? (form.sharePlatform === "WHATSAPP" ? "https://api.whatsapp.com/send?text=Check%20this%20out%3A%20YOUR_PROMOTIONAL_URL" : "https://www.facebook.com/sharer/sharer.php?u=YOUR_PROMOTIONAL_URL") : "https://example.com"}
+                    onFocus={(e) => {
+                      if (form.category === "SPONSORED" && !form.taskLink.trim()) {
+                        updateField(
+                          "taskLink",
+                          form.sharePlatform === "WHATSAPP"
+                            ? "https://api.whatsapp.com/send?text=Check%20this%20out%3A%20YOUR_PROMOTIONAL_URL"
+                            : "https://www.facebook.com/sharer/sharer.php?u=YOUR_PROMOTIONAL_URL"
+                        );
+                      }
+                    }}
+                  />
+                  {form.category === "SPONSORED" && (
+                    <>
+                      <small>This link will be included automatically in the message users share.</small>
+
+                    </>
+                  )}
+                </label>
+
+                {form.category === "SPONSORED" && (
                   <label>
                     Sharing platform
                     <select
@@ -410,13 +431,26 @@ export default function MiningTasksPage() {
                     >
                       <option value="WHATSAPP">WhatsApp</option>
                       <option value="FACEBOOK">Facebook</option>
-                      <option value="SNAPCHAT">Snapchat</option>
-                      <option value="INSTAGRAM">Instagram</option>
+                      
+                      
                     </select>
                   </label>
                 )}
 
                 <label>
+                {form.category === "SPONSORED" && (
+                  <label>
+                    Share message
+                    <textarea
+                      required
+                      rows={4}
+                      value={form.shareMessage}
+                      onChange={(e) => updateField("shareMessage", e.target.value)}
+                      placeholder="Write the message users will share..."
+                    />
+                    <small>This message appears automatically when users open WhatsApp or Facebook.</small>
+                  </label>
+                )}
                   Minimum completion time
                   <select
                     value={form.minDurationSeconds}

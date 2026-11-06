@@ -30,6 +30,8 @@ export async function GET() {
         description: true,
         instructions: true,
         taskLink: true,
+        sharePlatform: true,
+        shareMessage: true,
         category: true,
         reward: true,
         totalCompletions: true,

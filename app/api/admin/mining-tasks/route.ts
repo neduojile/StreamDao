@@ -8,7 +8,8 @@ const taskSchema = z.object({
   description: z.string().trim().min(5),
   instructions: z.string().trim().min(5),
   taskLink: z.string().url().optional().or(z.literal("")),
-  sharePlatform: z.enum(["WHATSAPP", "FACEBOOK", "SNAPCHAT", "INSTAGRAM"]).nullable().optional(),
+  sharePlatform: z.enum(["WHATSAPP", "FACEBOOK"]).nullable().optional(),
+  shareMessage: z.string().max(5000).nullable().optional(),
   category: z.enum(["REGULAR", "SPONSORED"]),
   reward: z.number().positive().max(1000000),
   minDurationSeconds: z.number().int().min(1).max(86400),
@@ -21,6 +22,9 @@ const taskSchema = z.object({
     });
   }
 
+  if (data.category === "SPONSORED" && !data.shareMessage?.trim()) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["shareMessage"], message: "Sponsored tasks require a share message." });
+  }
   if (data.category === "SPONSORED" && !data.sharePlatform) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -66,8 +70,9 @@ export async function POST(request: NextRequest) {
         title: data.title,
         description: data.description,
         instructions: data.instructions,
-        taskLink: data.category === "REGULAR" ? data.taskLink || null : null,
+        taskLink: data.taskLink || null,
         sharePlatform: data.category === "SPONSORED" ? data.sharePlatform ?? null : null,
+        shareMessage: data.category === "SPONSORED" ? data.shareMessage?.trim() || null : null,
         category: data.category,
         reward: data.reward,
         minDurationSeconds: data.minDurationSeconds,

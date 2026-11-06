@@ -8,7 +8,8 @@ const updateSchema = z.object({
   description: z.string().trim().min(5).optional(),
   instructions: z.string().trim().min(5).optional(),
   taskLink: z.string().url().nullable().or(z.literal("")).optional(),
-  sharePlatform: z.enum(["WHATSAPP", "FACEBOOK", "SNAPCHAT", "INSTAGRAM"]).nullable().optional(),
+  sharePlatform: z.enum(["WHATSAPP", "FACEBOOK"]).nullable().optional(),
+  shareMessage: z.string().max(5000).nullable().optional(),
   category: z.enum(["REGULAR", "SPONSORED"]).optional(),
   reward: z.number().positive().max(1000000).optional(),
   minDurationSeconds: z.number().int().min(1).max(86400).optional(),
@@ -63,6 +64,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       );
     }
 
+    if (finalCategory === "SPONSORED" && !(data.shareMessage ?? existing.shareMessage)?.trim()) {
+      return NextResponse.json({ error: "Sponsored tasks require a share message." }, { status: 400 });
+    }
     if (finalCategory === "SPONSORED" && !finalSharePlatform) {
       return NextResponse.json(
         { error: "Sponsored tasks require a sharing platform." },
@@ -75,9 +79,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       data: {
         ...data,
         category: finalCategory,
-        taskLink: finalCategory === "REGULAR" ? finalTaskLink || null : null,
+        taskLink: finalTaskLink || null,
         sharePlatform:
           finalCategory === "SPONSORED" ? finalSharePlatform : null,
+        shareMessage: finalCategory === "SPONSORED" ? (data.shareMessage ?? existing.shareMessage) : null,
         proofType: "TEXT",
         proofInstructions: null,
         maxCompletions: null,
