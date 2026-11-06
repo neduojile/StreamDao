@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Wallet" ADD COLUMN     "tappingBalance" DECIMAL(18,2) NOT NULL DEFAULT 0,
+ADD COLUMN     "whotBalance" DECIMAL(18,2) NOT NULL DEFAULT 0;

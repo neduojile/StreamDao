@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  fullName     String
+  username     String   @unique
+  email        String   @unique
+  phone        String   @unique
+  passwordHash String
+
+  referralCode String   @unique
+  referredById String?
+  referredBy   User?    @relation("UserReferrals", fields: [referredById], references: [id])
+  referrals    User[]   @relation("UserReferrals")
+
+  wallet       Wallet?
+  transactions Transaction[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([referredById])
+}
+
+model Wallet {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+
+  taskBalance    Decimal  @default(0) @db.Decimal(18, 2)
+  referralBalance Decimal @default(0) @db.Decimal(18, 2)
+  onehubBalance  Decimal  @default(0) @db.Decimal(18, 2)
+  whotBalance    Decimal  @default(0) @db.Decimal(18, 2)
+  tappingBalance Decimal  @default(0) @db.Decimal(18, 2)
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  userId      String
+  walletType  String
+  type        String
+  category    String
+  description String
+  amount      Decimal  @db.Decimal(18, 2)
+  status      String   @default("COMPLETED")
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([walletType])
+  @@index([category])
+}
