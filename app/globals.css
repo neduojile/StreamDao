@@ -5597,3 +5597,105 @@ body {
   .mining-task-card { padding: 16px; }
   .mining-task-meta { flex-wrap: wrap; }
 }
+/* Referral page */
+.referrals-content { gap: 22px; }
+.referral-link-panel, .referral-reward-panel {
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(185,243,75,.075), rgba(17,23,17,.96) 55%);
+}
+.referral-link-heading h2 { margin: 8px 0; font-size: 20px; }
+.referral-link-heading p, .referral-reward-grid p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.referral-link-field {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: rgba(0,0,0,.25);
+  overflow-wrap: anywhere;
+  color: var(--foreground);
+  font-size: 13px;
+}
+.referral-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.referral-copy-btn, .referral-share-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.referral-copy-btn { background: var(--accent); color: #10150b; }
+.referral-share-btn { background: rgba(255,255,255,.05); color: var(--foreground); }
+.referral-code-label { margin-top: 16px; color: var(--muted); font-size: 12px; }
+.referral-code-label strong { color: var(--accent); letter-spacing: 1px; }
+.referral-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.referral-reward-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.referral-reward-grid article {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+}
+.reward-level { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 1.3px; }
+.referral-reward-grid article > strong { display: block; margin-top: 9px; font-size: 27px; }
+.referral-reward-grid h3 { margin: 5px 0; font-size: 14px; }
+.referral-reward-grid p { margin: 0; }
+.referral-member-avatar { flex: 0 0 40px; }
+@media (max-width: 760px) {
+  .referral-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .referral-link-panel, .referral-reward-panel { padding: 19px; }
+}
+@media (max-width: 420px) {
+  .referral-reward-grid { grid-template-columns: 1fr; }
+  .referral-stats { grid-template-columns: 1fr 1fr; }
+  .referral-copy-btn, .referral-share-btn { flex: 1; padding-inline: 10px; }
+}
+/* Referrals page: cleaner, lighter layout */
+.referrals-content { gap: 18px; }
+.referral-link-panel { padding: 21px; }
+.referral-link-heading h2 { margin: 6px 0; }
+.referral-link-field { margin-top: 14px; }
+.referral-code-label { margin-top: 12px; }
+.referral-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.referral-stats .stat-card { min-width: 0; padding: 19px; }
+.referral-total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 4px 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.referral-total-line strong { color: var(--accent); font-size: 17px; }
+.referral-reward-panel { padding: 18px 21px; }
+.referral-reward-panel .section-heading { margin-bottom: 12px; }
+.referral-reward-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.referral-reward-strip strong { color: var(--accent); margin-left: 5px; }
+@media (max-width: 760px) {
+  .referral-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .referral-stats .stat-card { padding: 16px; }
+  .referral-stats .total-stat { grid-column: 1 / -1; }
+}
+@media (max-width: 420px) {
+  .referral-link-panel { padding: 17px; }
+  .referral-total-line { padding-inline: 2px; }
+}

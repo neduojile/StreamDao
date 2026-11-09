@@ -312,6 +312,7 @@ export default async function DashboardPage() {
     <span className="mobile-nav-icon">◈</span>
     <small>WHOT</small>
   </a>
+  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
   <a href="/dashboard/profile">
     <span className="mobile-nav-icon">♙</span>
     <small>Profile</small>

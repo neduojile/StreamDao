@@ -396,6 +396,7 @@ export default function MiningPage() {
         <Link href="/dashboard/mining" className="mobile-nav-active"><span className="mobile-nav-icon">✧</span><small>Mining</small></Link>
         <Link href="/dashboard/airtime"><span className="mobile-nav-icon">▤</span><small>Airtime</small></Link>
         <Link href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></Link>
+        <Link href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></Link>
         <Link href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></Link>
       </nav>
     </main>

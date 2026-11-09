@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Suspense, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PhoneInput } from "react-international-phone";
@@ -10,6 +10,11 @@ import "react-international-phone/style.css";
 export default function RegisterPage() {
   const router = useRouter();
   const [phone, setPhone] = useState("");
+  const [referralCode, setReferralCode] = useState("");
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("ref");
+    if (code) setReferralCode(code.toUpperCase());
+  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -145,8 +150,10 @@ export default function RegisterPage() {
             id="referralCode"
             name="referralCode"
             type="text"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
             placeholder="Enter referral code"
-          />
+/>
 
           {error && <p className="auth-error" role="alert">{error}</p>}
 
