@@ -1,0 +1,368 @@
+"use client";
+
+import { useCallback, useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
+
+type Wallet = {
+  referralBalance: string;
+  taskBalance: string;
+  onehubBalance: string;
+  whotBalance: string;
+  tappingBalance: string;
+};
+
+type Withdrawal = {
+  id: string;
+  walletType: string;
+  amount: string;
+  payoutMethod: string;
+  status: string;
+  createdAt: string;
+};
+
+type PayoutProfile = {
+  payoutMethod: string;
+  bankName: string | null;
+  accountName: string | null;
+  accountNumber: string | null;
+  cryptoNetwork: string | null;
+  walletAddress: string | null;
+};
+
+function money(value: string | number) {
+  return `€${Number(value || 0).toFixed(2)}`;
+}
+
+function statusStyle(status: string) {
+  if (status === "APPROVED" || status === "COMPLETED") {
+    return "border-lime-400/20 bg-lime-400/10 text-lime-300";
+  }
+  if (status === "REJECTED") {
+    return "border-red-400/20 bg-red-400/10 text-red-300";
+  }
+  return "border-yellow-400/20 bg-yellow-400/10 text-yellow-300";
+}
+
+export default function WithdrawPage() {
+  const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
+  const [payout, setPayout] = useState<PayoutProfile | null>(null);
+  const [customerServiceUrl, setCustomerServiceUrl] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const loadData = useCallback(async () => {
+    try {
+      const response = await fetch("/api/withdrawals", { cache: "no-store" });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to load withdrawal information.");
+      }
+
+      setWallet(data.wallet);
+      setWithdrawals(data.withdrawals ?? []);
+      setPayout(data.payoutProfile);
+      setCustomerServiceUrl(data.customerServiceUrl || "");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to load information.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const balances = [
+    { label: "Referral", value: Number(wallet?.referralBalance || 0) },
+    { label: "Mining tasks", value: Number(wallet?.taskBalance || 0) },
+    { label: "WHOT", value: Number(wallet?.whotBalance || 0) },
+    { label: "Tapping", value: Number(wallet?.tappingBalance || 0) },
+  ];
+
+  const totalBalance = balances.reduce((sum, item) => sum + item.value, 0);
+
+  async function submitWithdrawal(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError("");
+    setMessage("");
+
+    if (!payout) {
+      setError("Please set up your payout details before withdrawing.");
+      return;
+    }
+
+    const normalizedCode = couponCode.trim().toUpperCase();
+
+    if (!/^SD-\d{3}-\d{3}-\d{3}$/.test(normalizedCode)) {
+      setError("Enter your coupon in the format SD-123-456-789.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/withdrawals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ couponCode: normalizedCode }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to submit withdrawal.");
+      }
+
+      setMessage("Your combined withdrawal request has been submitted successfully.");
+      setCouponCode("");
+      await loadData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-[#07100c] px-4 pb-28 pt-7 text-white md:px-8 md:pb-10">
+      <div className="mx-auto max-w-3xl">
+        <Link
+          href="/dashboard/profile"
+          className="mb-7 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-lime-300"
+        >
+          ← Back to Profile
+        </Link>
+
+        <div className="mb-7">
+          <p className="text-[10px] font-bold uppercase tracking-[2px] text-lime-300">
+            YOUR EARNINGS
+          </p>
+          <h1 className="mt-2 text-2xl font-bold tracking-tight">Withdraw funds</h1>
+          <p className="mt-2 text-sm text-gray-400">
+            Combine your eligible earnings and request one withdrawal.
+          </p>
+        </div>
+
+        {loading ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0d1912] p-10 text-center text-sm text-gray-400">
+            Loading your withdrawal information...
+          </div>
+        ) : (
+          <>
+            <section className="relative mb-6 overflow-hidden rounded-2xl border border-lime-300/15 bg-gradient-to-br from-[#17291a] via-[#102016] to-[#0c1710] p-6">
+              <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-lime-300/[0.07] blur-3xl" />
+              <div className="relative">
+                <p className="text-xs font-medium text-gray-400">
+                  Total available for withdrawal
+                </p>
+                <h2 className="mt-3 text-4xl font-bold tracking-tight text-white">
+                  {money(totalBalance)}
+                </h2>
+                <p className="mt-2 text-xs text-gray-500">
+                  Combined balance from your four eligible earning wallets
+                </p>
+
+                <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {balances.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-xl border border-white/[0.07] bg-black/20 p-3"
+                    >
+                      <p className="text-[10px] text-gray-500">{item.label}</p>
+                      <p className="mt-2 text-sm font-semibold text-lime-200">
+                        {money(item.value)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-2xl border border-white/10 bg-[#0d1912] p-5 sm:p-6">
+              <div className="mb-5">
+                <p className="text-[10px] font-bold uppercase tracking-[1.7px] text-lime-300">
+                  WITHDRAWAL REQUEST
+                </p>
+                <h2 className="mt-2 text-lg font-semibold">Redeem your coupon</h2>
+                <p className="mt-1 text-xs leading-5 text-gray-400">
+                  Enter a valid coupon code generated by StreamDao administration.
+                  Your entire eligible balance will be included in one request.
+                </p>
+              </div>
+
+              {!payout ? (
+                <div className="rounded-xl border border-yellow-400/15 bg-yellow-400/[0.05] p-4">
+                  <p className="text-sm text-yellow-200">
+                    You have not added payout details yet.
+                  </p>
+                  <Link
+                    href="/dashboard/account-setup"
+                    className="mt-3 inline-flex text-sm font-semibold text-lime-300 hover:text-lime-200"
+                  >
+                    Set up payout details →
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-5 rounded-xl border border-white/10 bg-black/20 p-4">
+                    <p className="mb-2 text-xs text-gray-500">Receiving method</p>
+                    {payout.payoutMethod === "BANK" ? (
+                      <>
+                        <p className="text-sm font-semibold">{payout.bankName}</p>
+                        <p className="mt-1 text-xs text-gray-400">{payout.accountName}</p>
+                        <p className="mt-1 text-xs text-gray-400">
+                          Account: {payout.accountNumber}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-sm font-semibold">{payout.cryptoNetwork}</p>
+                        <p className="mt-1 break-all text-xs text-gray-400">
+                          {payout.walletAddress}
+                        </p>
+                      </>
+                    )}
+                    <Link
+                      href="/dashboard/account-setup"
+                      className="mt-3 inline-flex text-xs font-medium text-lime-300 hover:text-lime-200"
+                    >
+                      Change payout details →
+                    </Link>
+                  </div>
+
+                  <form onSubmit={submitWithdrawal} className="space-y-4">
+                    <div>
+                      <label className="mb-2 block text-xs font-medium text-gray-400">
+                        Withdrawal coupon code
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        autoComplete="off"
+                        maxLength={13}
+                        value={couponCode}
+                        onChange={(event) =>
+                          setCouponCode(event.target.value.toUpperCase())
+                        }
+                        placeholder=""
+                        className="w-full rounded-xl border border-white/10 bg-[#101b16] px-4 py-3.5 text-sm font-semibold tracking-wider text-white outline-none transition placeholder:font-normal placeholder:tracking-normal placeholder:text-gray-600 focus:border-lime-400/60"
+                      />
+                      <p className="mt-2 text-[11px] text-gray-500">
+                        Each coupon can only be used once and expires 20 days after generation.
+                      </p>
+                    </div>
+
+                    {error && (
+                      <p className="rounded-xl border border-red-400/20 bg-red-400/10 p-3 text-sm text-red-300">
+                        {error}
+                      </p>
+                    )}
+                    {message && (
+                      <p className="rounded-xl border border-lime-400/20 bg-lime-400/10 p-3 text-sm text-lime-300">
+                        {message}
+                      </p>
+                    )}
+
+                    {customerServiceUrl && (
+                      <a
+                        href={customerServiceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="withdraw-support-card group relative block overflow-hidden rounded-2xl border border-lime-300/30 p-4 transition duration-300 hover:-translate-y-1 hover:border-lime-300/60"
+                      >
+                        <span className="withdraw-support-glow" />
+                        <span className="relative flex items-center gap-3">
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-lime-300/15 text-xl text-lime-300">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h8M8 14h5m-1 7-4-4H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5l-4 4Z" />
+                            </svg>
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-sm font-bold text-white">Need a withdrawal coupon?</span>
+                            <span className="mt-1 block text-xs text-gray-300">Contact our support team to get assistance.</span>
+                          </span>
+                          <span className="text-lg font-semibold text-lime-300 transition-transform duration-300 group-hover:translate-x-1">↗</span>
+                        </span>
+                        <span className="relative mt-3 flex items-center gap-2 text-xs font-bold text-lime-300">
+                          <span className="h-2 w-2 rounded-full bg-lime-300 animate-pulse" />
+                          Contact Customer Service
+                        </span>
+                      </a>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={submitting || totalBalance <= 0}
+                      className="w-full rounded-xl bg-gradient-to-r from-lime-400 to-green-400 py-3.5 text-sm font-bold text-[#07100c] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {submitting
+                        ? "Processing request..."
+                        : totalBalance <= 0
+                          ? "No available balance"
+                          : "Redeem coupon & request withdrawal"}
+                    </button>
+                  </form>
+                </>
+              )}
+            </section>
+
+            <section className="mt-7">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-base font-semibold">Withdrawal history</h2>
+                <span className="text-xs text-gray-500">
+                  {withdrawals.length} requests
+                </span>
+              </div>
+
+              {withdrawals.length === 0 ? (
+                <div className="rounded-2xl border border-white/10 bg-[#0d1912] p-8 text-center">
+                  <p className="text-sm text-gray-400">
+                    No withdrawal requests yet.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {withdrawals.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#0d1912] p-4"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold">
+                          {item.walletType === "COMBINED"
+                            ? "Combined withdrawal"
+                            : `${item.walletType} Wallet`}
+                        </p>
+                        <p className="mt-1 text-xs text-gray-500">
+                          {new Date(item.createdAt).toLocaleString()}
+                        </p>
+                        <p className="mt-1 text-xs text-gray-500">
+                          {item.payoutMethod === "BANK"
+                            ? "Bank transfer"
+                            : "Crypto wallet"}
+                        </p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <p className="text-sm font-semibold">{money(item.amount)}</p>
+                        <span
+                          className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold ${statusStyle(item.status)}`}
+                        >
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          </>
+        )}
+      </div>
+    </main>
+  );
+}
