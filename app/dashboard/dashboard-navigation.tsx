@@ -37,7 +37,7 @@ export function DashboardSidebarNav() {
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={item.href} prefetch={true}
             className={`dashboard-nav-link${active ? " active" : ""}`}
             aria-current={active ? "page" : undefined}
           >
@@ -64,7 +64,7 @@ export function DashboardMobileNav() {
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={item.href} prefetch={true}
             className={active ? "mobile-nav-active" : ""}
             aria-current={active ? "page" : undefined}
           >

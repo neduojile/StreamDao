@@ -30,6 +30,14 @@ export default function ReferralActions({ referralLink }: { referralLink: string
       >
         Share on WhatsApp
       </a>
+      <a
+        className="referral-share-btn"
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Share on Facebook
+      </a>
     </div>
   );
 }

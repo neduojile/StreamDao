@@ -23,24 +23,16 @@ export default async function ProfilePage() {
   const userId = await verifySession(token);
   if (!userId) redirect("/login");
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      fullName: true,
-      username: true,
-      email: true,
-      phone: true,
-      createdAt: true,
-    },
-  });
-
-  if (!user) redirect("/login");
-
-  const [wallet, earnings] = await Promise.all([
-    prisma.wallet.upsert({
-      where: { userId },
-      update: {},
-      create: { userId },
+  const [user, earnings] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        fullName: true,
+        username: true,
+        email: true,
+        phone: true,
+        createdAt: true,
+      },
     }),
     prisma.transaction.aggregate({
       where: {
@@ -52,6 +44,7 @@ export default async function ProfilePage() {
     }),
   ]);
 
+  if (!user) redirect("/login");
   const totalEarnings = Number(earnings._sum.amount ?? 0);
   const initial = user.fullName.trim().charAt(0).toUpperCase();
 

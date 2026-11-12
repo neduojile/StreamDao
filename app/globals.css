@@ -8176,3 +8176,476 @@ body {
   .leaderboard-row { gap: 8px; padding-inline: 9px; }
   .leaderboard-row-rank { width: 22px; font-size: 10px; }
 }
+
+/* StreamDao � compact premium referral cards */
+.referrals-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+  align-items: stretch;
+  gap: 16px;
+}
+
+.referrals-content > .referral-link-panel,
+.referrals-content > .referral-leaderboard-card {
+  min-width: 0;
+  min-height: 220px;
+  height: 100%;
+  margin: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  animation: referralCardEnter .65s ease both;
+}
+
+.referrals-content > .referral-link-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 22px;
+  gap: 10px;
+  background:
+    radial-gradient(ellipse at 5% 0%, rgba(185,243,75,.10), transparent 55%),
+    linear-gradient(145deg, #111b12, #0d130e);
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+
+.referrals-content > .referral-link-panel:hover {
+  border-color: rgba(185,243,75,.4);
+  box-shadow: 0 12px 35px rgba(185,243,75,.07);
+  transform: translateY(-3px);
+}
+
+.referral-link-heading h2 {
+  font-size: clamp(17px, 2vw, 21px);
+  margin: 6px 0;
+}
+
+.referral-link-heading p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.referral-link-field {
+  min-width: 0;
+  margin-top: 5px;
+  padding: 12px 14px;
+}
+
+.referral-link-field span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.referral-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.referral-copy-btn,
+.referral-share-btn {
+  min-height: 38px;
+  padding: 0 13px;
+  font-size: 11px;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.referral-copy-btn:hover,
+.referral-share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(185,243,75,.10);
+}
+
+.referral-code-label {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.referrals-content > .referral-leaderboard-card {
+  min-height: 220px;
+  padding: 22px;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(185,243,75,.16), transparent 42%),
+    linear-gradient(145deg, #172218, #0d140f);
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+
+.referrals-content > .referral-leaderboard-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(185,243,75,.6);
+  box-shadow: 0 14px 38px rgba(185,243,75,.09);
+}
+
+.referral-leaderboard-card-content {
+  min-width: 0;
+}
+
+.referral-leaderboard-card h2 {
+  font-size: clamp(18px, 2vw, 22px);
+  margin: 8px 0;
+}
+
+.referral-leaderboard-card p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.referral-leaderboard-cta {
+  margin-top: 13px;
+  font-size: 12px;
+}
+
+.referral-leaderboard-card-art {
+  flex: 0 0 105px;
+  width: 105px;
+  height: 115px;
+  border-radius: 22px;
+  animation: referralArtFloat 4s ease-in-out infinite;
+}
+
+.referral-leaderboard-card-art b {
+  font-size: 34px;
+}
+
+.referrals-content > .referral-stats {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+@keyframes referralCardEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes referralArtFloat {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50% { transform: rotate(0deg) translateY(-5px); }
+}
+
+@media (max-width: 760px) {
+  .referrals-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .referrals-content > .referral-link-panel,
+  .referrals-content > .referral-leaderboard-card {
+    min-height: 0;
+    padding: 19px;
+  }
+
+  .referrals-content > .referral-stats {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .referral-actions > * {
+    flex: 1 1 auto;
+    padding-inline: 9px;
+  }
+
+  .referral-leaderboard-card-art {
+    flex-basis: 82px;
+    width: 82px;
+    height: 100px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .referrals-content > *,
+  .referral-leaderboard-card-art {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* STREAMDAO HOME WELCOME MODAL */
+.home-welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 8, 6, .78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: homeWelcomeFadeIn .45s ease both;
+}
+
+.home-welcome-modal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: min(100%, 490px);
+  border: 1px solid rgba(174, 255, 104, .2);
+  border-radius: 27px;
+  background: linear-gradient(145deg, #17231b, #0c1410 58%, #101b14);
+  box-shadow: 0 30px 100px rgba(0,0,0,.65), 0 0 55px rgba(145,255,74,.1);
+  animation: auth-card-enter .65s cubic-bezier(.22,1,.36,1) both;
+}
+
+.home-welcome-glow {
+  position: absolute;
+  z-index: -1;
+  top: -150px;
+  left: 50%;
+  width: 360px;
+  height: 300px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(153,255,80,.17);
+  filter: blur(75px);
+  pointer-events: none;
+}
+
+.home-welcome-content {
+  position: relative;
+  padding: 39px 34px 30px;
+  text-align: center;
+}
+
+.home-welcome-close {
+  position: absolute;
+  z-index: 2;
+  top: 17px;
+  right: 17px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  color: #cbd5ce;
+  background: rgba(255,255,255,.06);
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.home-welcome-close:hover {
+  color: white;
+  background: rgba(255,255,255,.13);
+  transform: rotate(90deg);
+}
+
+.home-welcome-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  margin: 0 auto 20px;
+  border: 1px solid rgba(183,255,116,.25);
+  border-radius: 17px;
+  color: #c4ff8b;
+  background: linear-gradient(145deg, rgba(174,255,104,.2), rgba(174,255,104,.06));
+  box-shadow: 0 0 30px rgba(174,255,104,.12);
+}
+
+.home-welcome-eyebrow {
+  color: #a9e77c;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.home-welcome-content h2 {
+  max-width: 370px;
+  margin: 13px auto 11px;
+  color: #f5f8f4;
+  font-size: clamp(25px, 5vw, 34px);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -.045em;
+}
+
+.home-welcome-content h2 span {
+  color: #b8f77e;
+}
+
+.home-welcome-description {
+  max-width: 350px;
+  margin: 0 auto 26px;
+  color: #a5b1a8;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.home-welcome-mining {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid rgba(184,247,126,.25);
+  border-radius: 17px;
+  color: #efffe4;
+  background: linear-gradient(110deg, rgba(144,211,91,.17), rgba(144,211,91,.07));
+  text-align: left;
+  text-decoration: none;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.home-welcome-mining:hover {
+  transform: translateY(-2px);
+  border-color: rgba(184,247,126,.55);
+  background: rgba(144,211,91,.2);
+}
+
+.home-welcome-action-icon {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+  place-items: center;
+  border-radius: 13px;
+  color: #c6ff91;
+  background: rgba(184,247,126,.12);
+}
+
+.home-welcome-action-copy {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+}
+
+.home-welcome-action-copy strong {
+  color: #efffe4;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.home-welcome-action-copy small {
+  color: #a5b5a7;
+  font-size: 11px;
+}
+
+.home-welcome-mining > svg {
+  flex: 0 0 auto;
+  color: #b8f77e;
+}
+
+.home-welcome-support {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  color: #e2eae3;
+  background: rgba(255,255,255,.045);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.home-welcome-support:hover {
+  border-color: rgba(184,247,126,.3);
+  color: #c6ff91;
+  background: rgba(255,255,255,.08);
+}
+
+.home-welcome-footnote {
+  display: block;
+  margin-top: 20px;
+  color: #758479;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+
+@keyframes homeWelcomeFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes homeWelcomeRise {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 480px) {
+  .home-welcome-content { padding: 35px 21px 25px; }
+  .home-welcome-modal { border-radius: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-welcome-overlay,
+  .home-welcome-modal { animation: none; }
+  .home-welcome-mining,
+  .home-welcome-close,
+  .home-welcome-support { transition: none; }
+}
+/* Compact welcome popup sizing */
+.home-welcome-modal {
+  width: min(100%, 420px);
+  border-radius: 23px;
+}
+
+.home-welcome-content {
+  padding: 30px 27px 23px;
+}
+
+.home-welcome-icon {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 15px;
+  border-radius: 14px;
+}
+
+.home-welcome-content h2 {
+  max-width: 330px;
+  margin: 10px auto 8px;
+  font-size: clamp(23px, 4vw, 29px);
+}
+
+.home-welcome-description {
+  max-width: 310px;
+  margin-bottom: 19px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.home-welcome-mining {
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.home-welcome-action-icon {
+  width: 37px;
+  height: 37px;
+  flex-basis: 37px;
+  border-radius: 11px;
+}
+
+.home-welcome-action-copy strong {
+  font-size: 12px;
+}
+
+.home-welcome-action-copy small {
+  font-size: 10px;
+}
+
+.home-welcome-support {
+  min-height: 42px;
+  margin-top: 9px;
+  font-size: 12px;
+}
+
+.home-welcome-footnote {
+  margin-top: 15px;
+  font-size: 9px;
+}
+
+@media (max-width: 480px) {
+  .home-welcome-content {
+    padding: 29px 19px 21px;
+  }
+}

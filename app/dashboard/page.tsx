@@ -1,12 +1,14 @@
 export const instant = false;
 
 import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
 import EarningsCardCarousel from "./earnings-card-carousel";
+import ReferralActions from "./referrals/referral-actions";
+import HomeWelcomePopup from "./home-welcome-popup";
 import {  LayoutDashboard, Pickaxe, Hand, Spade, Users, Wallet, Activity, LogOut, House, UserRound , Sparkles, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
 const money = (value: number) =>
@@ -16,6 +18,9 @@ const money = (value: number) =>
   }).format(value);
 
 export default async function DashboardPage() {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol = host.includes("localhost") ? "http" : "https";
   const cookieStore = await cookies();
   const token = cookieStore.get("streamdao_session")?.value;
 
@@ -41,7 +46,7 @@ export default async function DashboardPage() {
     create: { userId },
   });
 
-  const [earnings, transactions, referralCount] = await Promise.all([
+  const [earnings, transactions, referralCount, supportSettings] = await Promise.all([
     prisma.transaction.aggregate({
       where: {
         userId,
@@ -68,6 +73,7 @@ export default async function DashboardPage() {
     prisma.user.count({
       where: { referredById: userId },
     }),
+    prisma.couponSettings.findUnique({ where: { id: "default" }, select: { customerServiceUrl: true } }),
   ]);
 
   const totalEarnings = Number(earnings._sum.amount ?? 0);
@@ -283,12 +289,13 @@ export default async function DashboardPage() {
             <div>
               <span className="section-eyebrow">GROW YOUR COMMUNITY</span>
               <h2>Invite friends. Earn rewards.</h2>
-              <p>Share your referral code and earn when people join through you.</p>
+              <p>Share your personal invite link and earn when people join through you.</p>
             </div>
             <div className="referral-code">
-              <span>YOUR REFERRAL CODE</span>
-              <strong>{user.referralCode}</strong>
+              <span>YOUR PERSONAL INVITE LINK</span>
+              <strong>{`${protocol}://${host}/register?ref=${user.referralCode}`}</strong>
             </div>
+            <ReferralActions referralLink={`${protocol}://${host}/register?ref=${user.referralCode}`} />
           </section>
 
           <footer className="dashboard-footer">
@@ -298,6 +305,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+      <HomeWelcomePopup supportUrl={supportSettings?.customerServiceUrl || "https://example.com/support"} />
       <DashboardMobileNav />
     </main>
   );
