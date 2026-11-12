@@ -20,6 +20,7 @@ export async function GET() {
     const tasks = await prisma.miningTask.findMany({
       where: {
         status: "ACTIVE",
+        createdAt: { gte: cycleStart, lt: nextReset },
         AND: [
           { OR: [{ startsAt: null }, { startsAt: { lte: now } }] },
           { OR: [{ endsAt: null }, { endsAt: { gte: now } }] },
@@ -39,7 +40,7 @@ export async function GET() {
         totalCompletions: true,
         minDurationSeconds: true,
         progress: {
-          where: { userId, cycleStart },
+          where: { userId },
           select: {
             startedAt: true,
             claimedAt: true,

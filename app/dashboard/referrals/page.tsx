@@ -1,5 +1,6 @@
 export const instant = false;
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -87,14 +88,7 @@ export default async function ReferralsPage() {
         </Link>
 
         <div className="sidebar-label">WORKSPACE</div>
-        <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link"><span className="nav-icon">✧</span> Mining Tasks</Link>
-          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link"><span className="nav-icon">◈</span> WHOT</Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link active"><span className="nav-icon">♧</span> Referrals</Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="sidebar-divider" />
         <div className="sidebar-label">YOUR ACCOUNT</div>
@@ -145,6 +139,22 @@ export default async function ReferralsPage() {
               Your referral code: <strong>{user.referralCode}</strong>
             </div>
           </section>
+          <Link href="/dashboard/referrals/leaderboard" className="referral-leaderboard-card">
+            <div className="referral-leaderboard-card-glow" />
+            <div className="referral-leaderboard-card-content">
+              <span className="referral-leaderboard-kicker">STREAMDAO COMMUNITY</span>
+              <h2>Who's leading the network?</h2>
+              <p>Explore the Top 50 members building the StreamDao community through real referrals.</p>
+              <span className="referral-leaderboard-cta">Explore leaderboard <span>→</span></span>
+            </div>
+            <div className="referral-leaderboard-card-art">
+              <span className="leaderboard-card-crown">♛</span>
+              <strong>TOP</strong>
+              <b>50</b>
+              <span>LEADERS</span>
+            </div>
+          </Link>
+
           <section className="dashboard-stats referral-stats">
             <article className="stat-card total-stat">
               <div className="stat-heading">
@@ -240,14 +250,7 @@ export default async function ReferralsPage() {
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
-  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
-  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
-  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
-  <a href="/dashboard/referrals" className="mobile-nav-active"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
-</nav>
+      <DashboardMobileNav />
     </main>
   );
 }

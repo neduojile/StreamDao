@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getCurrentAdmin } from "@/lib/admin-auth";
+import { getTaskCycle } from "@/lib/task-cycle";
 
 const taskSchema = z.object({
   title: z.string().trim().min(3).max(120),
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = parsed.data;
+    const { nextReset } = getTaskCycle(new Date());
 
     const task = await prisma.miningTask.create({
       data: {
@@ -80,7 +82,7 @@ export async function POST(request: NextRequest) {
         proofInstructions: null,
         maxCompletions: null,
         startsAt: null,
-        endsAt: null,
+        endsAt: nextReset,
         createdById: admin.id,
       },
     });

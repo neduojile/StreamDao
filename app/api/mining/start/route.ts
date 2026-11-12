@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       where: {
         id: taskId,
         status: "ACTIVE",
+        createdAt: { gte: cycleStart, lt: nextReset },
         AND: [
           { OR: [{ startsAt: null }, { startsAt: { lte: now } }] },
           { OR: [{ endsAt: null }, { endsAt: { gte: now } }] },
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     const existing = await prisma.taskProgress.findUnique({
       where: {
-        taskId_userId_cycleStart: { taskId, userId, cycleStart },
+        taskId_userId: { taskId, userId },
       },
     });
 
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const progress = await prisma.taskProgress.create({
-        data: { taskId, userId, cycleStart },
+        data: { taskId, userId },
       });
 
       return NextResponse.json({
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
       ) {
         const progress = await prisma.taskProgress.findUnique({
           where: {
-            taskId_userId_cycleStart: { taskId, userId, cycleStart },
+            taskId_userId: { taskId, userId },
           },
         });
 

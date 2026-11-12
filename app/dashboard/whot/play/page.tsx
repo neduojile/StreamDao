@@ -1,5 +1,6 @@
 "use client";
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -25,6 +26,7 @@ type WhotData = {
   dailySpinLimit: number;
   spinsUsed: number;
   remainingSpins: number;
+  nextResetAt: string;
   balance: string;
   prizes: Prize[];
   recentSpins: Spin[];
@@ -46,6 +48,14 @@ export default function WhotPage() {
   const [error, setError] = useState("");
   const [winningPrize, setWinningPrize] = useState<Prize | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const resetSeconds = data?.nextResetAt ? Math.max(0, Math.ceil((new Date(data.nextResetAt).getTime() - now) / 1000)) : 0;
+  const resetClock = `${String(Math.floor(resetSeconds / 3600)).padStart(2, "0")}:${String(Math.floor((resetSeconds % 3600) / 60)).padStart(2, "0")}:${String(resetSeconds % 60).padStart(2, "0")}`;
 
   const loadData = useCallback(async () => {
     try {
@@ -134,14 +144,7 @@ export default function WhotPage() {
         </Link>
 
         <div className="sidebar-label">WORKSPACE</div>
-        <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link"><span className="nav-icon">✧</span> Mining Tasks</Link>
-          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link active"><span className="nav-icon">◈</span> WHOT</Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="sidebar-divider" />
         <div className="sidebar-label">YOUR ACCOUNT</div>
@@ -180,7 +183,7 @@ export default function WhotPage() {
             <article className="whot-stat-card">
               <span>Free spins left</span>
               <strong>{loading ? "—" : `${data?.remainingSpins ?? 0}/${data?.dailySpinLimit ?? 3}`}</strong>
-              <small>Resets daily at midnight Lagos time</small>
+              <small>Next reset in {resetClock} · 00:00 Nigeria time</small>
             </article>
           </section>
 
@@ -292,14 +295,7 @@ export default function WhotPage() {
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
-  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
-  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
-  <a href="/dashboard/whot" className="mobile-nav-active"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
-  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
-</nav>
+      <DashboardMobileNav />
     </main>
   );
 }

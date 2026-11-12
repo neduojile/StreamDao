@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, connection } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
 import { ensureWhotConfiguration, getLagosDayKey } from "@/lib/whot";
+import { getNextLagosMidnight } from "@/lib/lagos-time";
 
 export async function GET(request: NextRequest) {
   await connection();
@@ -67,6 +68,7 @@ export async function GET(request: NextRequest) {
         reward: spin.reward.toString(),
       })),
       dayKey,
+      nextResetAt: getNextLagosMidnight().toISOString(),
     });
   } catch (error) {
     console.error("WHOT status error:", error);

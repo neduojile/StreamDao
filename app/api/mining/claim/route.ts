@@ -26,7 +26,11 @@ export async function POST(request: NextRequest) {
 
     const result = await prisma.$transaction(async (tx) => {
       const task = await tx.miningTask.findFirst({
-        where: { id: taskId, status: "ACTIVE" },
+        where: {
+          id: taskId,
+          status: "ACTIVE",
+          createdAt: { gte: cycleStart, lt: nextReset },
+        },
         select: {
           id: true,
           title: true,
@@ -41,14 +45,14 @@ export async function POST(request: NextRequest) {
 
       if (
         (task.startsAt && task.startsAt > now) ||
-        (task.endsAt && task.endsAt < now)
+        (task.endsAt && task.endsAt <= now)
       ) {
         throw new Error("TASK_UNAVAILABLE");
       }
 
       const progress = await tx.taskProgress.findUnique({
         where: {
-          taskId_userId_cycleStart: { taskId, userId, cycleStart },
+          taskId_userId: { taskId, userId },
         },
       });
 
@@ -66,7 +70,6 @@ export async function POST(request: NextRequest) {
       const claimed = await tx.taskProgress.updateMany({
         where: {
           id: progress.id,
-          cycleStart,
           claimedAt: null,
         },
         data: { claimedAt: now },

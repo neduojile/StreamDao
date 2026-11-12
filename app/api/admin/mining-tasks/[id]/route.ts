@@ -86,8 +86,6 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         proofType: "TEXT",
         proofInstructions: null,
         maxCompletions: null,
-        startsAt: null,
-        endsAt: null,
       },
     });
 

@@ -1,5 +1,7 @@
 export const instant = false;
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
+import { CreditCard, History as HistoryIcon, Megaphone, Smartphone, Settings, ChevronRight, LogOut } from "lucide-react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -55,35 +57,35 @@ export default async function ProfilePage() {
 
   const accountOptions = [
     {
-      icon: "▣",
+      icon: CreditCard,
       title: "Withdraw",
       description: "Cash out your available earnings",
       href: "/dashboard/withdraw",
       className: "profile-option-withdraw",
     },
     {
-      icon: "◷",
+      icon: HistoryIcon,
       title: "Earnings History",
       description: "View all your transactions and rewards",
       href: "/dashboard/history",
       className: "",
     },
     {
-      icon: "↗",
+      icon: Megaphone,
       title: "Sponsored Posts",
       description: "View sponsored sharing opportunities",
-      href: "/dashboard/sponsored-posts",
+      href: "/dashboard/mining?category=SPONSORED",
       className: "",
     },
     {
-      icon: "▤",
+      icon: Smartphone,
       title: "Airtime & Data",
       description: "Buy airtime and mobile data",
       href: "/dashboard/airtime",
       className: "",
     },
     {
-      icon: "⚙",
+      icon: Settings,
       title: "Account Setup",
       description: "Manage your bank or wallet payout details",
       href: "/dashboard/account-setup",
@@ -100,14 +102,7 @@ export default async function ProfilePage() {
         </Link>
 
         <div className="sidebar-label">WORKSPACE</div>
-        <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link"><span className="nav-icon">✧</span> Mining Tasks</Link>
-          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link"><span className="nav-icon">◈</span> WHOT</Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link active"><span className="nav-icon">♙</span> Profile</Link>
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="sidebar-divider" />
         <div className="sidebar-label">YOUR ACCOUNT</div>
@@ -119,7 +114,7 @@ export default async function ProfilePage() {
           </div>
         </div>
         <form action="/api/auth/logout" method="POST" className="sidebar-logout">
-          <button type="submit">↪ Log out</button>
+          <button type="submit"><LogOut size={16} /> Log out</button>
         </form>
       </aside>
 
@@ -153,12 +148,12 @@ export default async function ProfilePage() {
                 key={option.title}
                 className={`profile-option ${option.className}`}
               >
-                <span className="profile-option-icon">{option.icon}</span>
+                <span className="profile-option-icon"><option.icon size={19} strokeWidth={2} /></span>
                 <span className="profile-option-copy">
                   <strong>{option.title}</strong>
                   <small>{option.description}</small>
                 </span>
-                <span className="profile-option-arrow">›</span>
+                <span className="profile-option-arrow"><ChevronRight size={19} /></span>
               </Link>
             ))}
           </section>
@@ -194,21 +189,12 @@ export default async function ProfilePage() {
           </section>
 
           <form action="/api/auth/logout" method="POST" className="profile-logout-form">
-            <button type="submit">
-              <span>↪</span> Logout
-            </button>
+            <button type="submit"><LogOut size={18} /> Logout</button>
           </form>
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
-  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
-  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
-  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
-  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile" className="mobile-nav-active"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
-</nav>
+      <DashboardMobileNav />
     </main>
   );
 }

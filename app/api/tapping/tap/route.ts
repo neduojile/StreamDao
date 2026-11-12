@@ -2,8 +2,8 @@ import { NextRequest, NextResponse, connection } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getNextLagosMidnight } from "@/lib/lagos-time";
 
-const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 const SESSION_TAPS = 100;
 const MIN_TAP_INTERVAL_MS = 80;
 
@@ -42,9 +42,7 @@ export async function POST(request: NextRequest) {
             });
 
             if (progress.lastClaimedAt) {
-              const nextAvailableAt = new Date(
-                progress.lastClaimedAt.getTime() + COOLDOWN_MS
-              );
+              const nextAvailableAt = getNextLagosMidnight(progress.lastClaimedAt);
 
               if (now < nextAvailableAt) {
                 throw new Error("COOLDOWN_ACTIVE");

@@ -1,5 +1,6 @@
 "use client";
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -45,6 +46,11 @@ function formatTime(seconds: number) {
 export default function MiningPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<Filter>("ALL");
+
+  useEffect(() => {
+    const category = new URLSearchParams(window.location.search).get("category");
+    if (category === "SPONSORED") setFilter("SPONSORED");
+  }, []);
   const [loading, setLoading] = useState(true);
   const [busyTask, setBusyTask] = useState<string | null>(null);
   const [now, setNow] = useState(0);
@@ -235,14 +241,7 @@ export default function MiningPage() {
         </Link>
 
         <div className="sidebar-label">WORKSPACE</div>
-        <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link active"><span className="nav-icon">✧</span> Mining Tasks</Link>
-          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link"><span className="nav-icon">◈</span> WHOT</Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="sidebar-divider" />
         <form action="/api/auth/logout" method="POST" className="sidebar-logout">
@@ -418,14 +417,7 @@ export default function MiningPage() {
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
-  <a href="/dashboard/mining" className="mobile-nav-active"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
-  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
-  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
-  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
-</nav>
+      <DashboardMobileNav />
     </main>
   );
 }

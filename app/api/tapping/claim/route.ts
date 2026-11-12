@@ -2,8 +2,13 @@ import { NextRequest, NextResponse, connection } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getNextLagosMidnight } from "@/lib/lagos-time";
 
-const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+const getNextReset = (date: Date) => {
+  const next = new Date(date.toLocaleString("en-US", { timeZone: "Africa/Lagos" }));
+  next.setHours(24, 0, 0, 0);
+  return new Date(next.toLocaleString("en-US", { timeZone: "UTC" }) + " UTC");
+};
 const SESSION_TAPS = 100;
 const REWARD = new Prisma.Decimal("5.00");
 
@@ -37,7 +42,7 @@ export async function POST(request: NextRequest) {
 
             if (progress.lastClaimedAt) {
               const nextAvailableAt = new Date(
-                progress.lastClaimedAt.getTime() + COOLDOWN_MS
+                getNextLagosMidnight(progress.lastClaimedAt).getTime()
               );
 
               if (now < nextAvailableAt) {
@@ -80,7 +85,7 @@ export async function POST(request: NextRequest) {
             return {
               balance: wallet.tappingBalance.toString(),
               reward: REWARD.toString(),
-              nextAvailableAt: new Date(now.getTime() + COOLDOWN_MS).toISOString(),
+              nextAvailableAt: getNextLagosMidnight(now).toISOString(),
             };
           },
           { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }

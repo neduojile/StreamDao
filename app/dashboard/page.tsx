@@ -1,27 +1,19 @@
 export const instant = false;
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
 import EarningsCardCarousel from "./earnings-card-carousel";
+import {  LayoutDashboard, Pickaxe, Hand, Spade, Users, Wallet, Activity, LogOut, House, UserRound , Sparkles, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
 const money = (value: number) =>
   new Intl.NumberFormat("en", {
     style: "currency",
     currency: "EUR",
   }).format(value);
-
-const navigation = [
-  { label: "Overview", href: "#overview", icon: "⌂" },
-  { label: "Mining Tasks", href: "/dashboard/mining", icon: "✧" },
-  { label: "Tapping", href: "/dashboard/tapping", icon: "●" },
-  { label: "WHOT", href: "/dashboard/whot", icon: "◈" },
-  { label: "Referrals", href: "/dashboard/referrals", icon: "♧" },
-  { label: "My wallets", href: "#wallets", icon: "◈" },
-  { label: "Recent activity", href: "#activity", icon: "↗" },
-];
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -124,18 +116,7 @@ export default async function DashboardPage() {
 
         <div className="sidebar-label">WORKSPACE</div>
 
-        <nav className="dashboard-nav">
-          {navigation.map((item, index) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`dashboard-nav-link ${index === 0 ? "active" : ""}`}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <DashboardSidebarNav />
 
         <div className="sidebar-divider" />
 
@@ -153,7 +134,7 @@ export default async function DashboardPage() {
 
         <form action="/api/auth/logout" method="POST" className="sidebar-logout">
           <button type="submit">
-            <span>↪</span> Log out
+            <span><LogOut size={17} strokeWidth={1.8} /></span> Log out
           </button>
         </form>
 
@@ -185,7 +166,6 @@ export default async function DashboardPage() {
           <section className="welcome-panel compact-welcome">
             <h2>Welcome back, {firstName}!</h2>
           </section>
-
           <section className="dashboard-section" id="wallets">
             <div className="section-heading">
               <div>
@@ -198,36 +178,45 @@ export default async function DashboardPage() {
             <EarningsCardCarousel cards={earningsCards} />
           </section>
 
-          <section className="dashboard-stats">
-            <article className="stat-card total-stat">
-              <div className="stat-heading">
-                <span>Total earnings</span>
-                <span className="stat-icon">↗</span>
+          <section className="dashboard-section dashboard-shortcuts-section">
+            <div className="dashboard-section-heading">
+              <div>
+                <span className="dashboard-eyebrow">EXPLORE STREAMDAO</span>
+                <h2>Choose how to earn</h2>
               </div>
-              <strong>{money(totalEarnings)}</strong>
-              <p>All completed earning transactions</p>
-            </article>
+              <span className="dashboard-section-note">Your earning shortcuts</span>
+            </div>
 
-            <article className="stat-card">
-              <div className="stat-heading">
-                <span>Available balance</span>
-                <span className="stat-icon">◈</span>
-              </div>
-              <strong>
-                {money(Number(wallet.taskBalance) + Number(wallet.referralBalance) + Number(wallet.onehubBalance) + Number(wallet.whotBalance) + Number(wallet.tappingBalance))}
-              </strong>
-              <p>Across your three wallets</p>
-            </article>
+            <div className="dashboard-shortcuts">
+              <Link href="/dashboard/mining" className="dashboard-shortcut mining-shortcut">
+                <span className="shortcut-icon">⚒</span>
+                <span className="shortcut-content">
+                  <strong>Mining</strong>
+                  <small>Complete daily tasks and earn rewards</small>
+                </span>
+                <span className="shortcut-arrow">↗</span>
+              </Link>
 
-            <article className="stat-card">
-              <div className="stat-heading">
-                <span>Direct referrals</span>
-                <span className="stat-icon">♧</span>
-              </div>
-              <strong>{referralCount}</strong>
-              <p>People who joined using your code</p>
-            </article>
+              <Link href="/dashboard/mining?category=SPONSORED" className="dashboard-shortcut sponsored-shortcut">
+                <span className="shortcut-icon">✦</span>
+                <span className="shortcut-content">
+                  <strong>Sponsored</strong>
+                  <small>Earn from sponsored activities</small>
+                </span>
+                <span className="shortcut-arrow">↗</span>
+              </Link>
+
+              <Link href="/dashboard/referrals" className="dashboard-shortcut referral-shortcut">
+                <span className="shortcut-icon">♧</span>
+                <span className="shortcut-content">
+                  <strong>Referral</strong>
+                  <small>Invite friends and earn rewards</small>
+                </span>
+                <span className="shortcut-arrow">↗</span>
+              </Link>
+            </div>
           </section>
+
 
 
 
@@ -243,7 +232,7 @@ export default async function DashboardPage() {
             <div className="activity-panel">
               {transactions.length === 0 ? (
                 <div className="empty-activity">
-                  <div className="empty-activity-icon">↗</div>
+                  <div className="empty-activity-icon">Γåù</div>
                   <h3>Your journey starts here</h3>
                   <p>Your completed earnings and account transactions will appear here.</p>
                 </div>
@@ -252,12 +241,22 @@ export default async function DashboardPage() {
                   {transactions.map((transaction) => (
                     <div className="activity-row" key={transaction.id}>
                       <div className="activity-symbol">
-                        {transaction.type === "CREDIT" ? "↙" : "↗"}
-                      </div>
+  {transaction.category === "WHOT_SPIN" ? (
+    <Spade size={21} strokeWidth={1.8} />
+  ) : transaction.category === "TAPPING_REWARD" ? (
+    <Hand size={21} strokeWidth={1.8} />
+  ) : transaction.category === "DIRECT_REFERRAL" ? (
+    <Users size={21} strokeWidth={1.8} />
+  ) : transaction.type === "CREDIT" ? (
+    <Wallet size={21} strokeWidth={1.8} />
+  ) : (
+    <ArrowDownLeft size={21} strokeWidth={1.8} />
+  )}
+</div>
                       <div className="activity-description">
                         <strong>{transaction.description}</strong>
                         <span>
-                          {transaction.category} · {transaction.walletType}
+                          {transaction.category} {"·"} {transaction.walletType}
                         </span>
                       </div>
                       <div className="activity-amount">
@@ -293,20 +292,13 @@ export default async function DashboardPage() {
           </section>
 
           <footer className="dashboard-footer">
-            <span>© {new Date().getFullYear()} StreamDao</span>
+            <span>{`© ${new Date().getFullYear()} StreamDao`}</span>
             <span>Small actions. Real rewards.</span>
           </footer>
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-  <a href="/dashboard" className="mobile-nav-active"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
-  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
-  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
-  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
-  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
-</nav>
+      <DashboardMobileNav />
     </main>
   );
 }

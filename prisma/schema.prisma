@@ -158,12 +158,10 @@ model TaskProgress {
   userId    String
   startedAt  DateTime @default(now())
   claimedAt  DateTime?
-  cycleStart DateTime
-
   task      MiningTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([taskId, userId, cycleStart])
+  @@unique([taskId, userId])
   @@index([userId, startedAt])
 }
 

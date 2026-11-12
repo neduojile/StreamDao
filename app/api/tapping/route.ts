@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse, connection } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getNextLagosMidnight } from "@/lib/lagos-time";
 
-const COOLDOWN_MS = 24 * 60 * 60 * 1000;
 const SESSION_TAPS = 100;
 
 export async function GET(request: NextRequest) {
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const now = Date.now();
     const lastClaimedAt = progress?.lastClaimedAt ?? null;
     const nextAvailableAt = lastClaimedAt
-      ? new Date(lastClaimedAt.getTime() + COOLDOWN_MS)
+      ? getNextLagosMidnight(lastClaimedAt)
       : null;
     const cooldownMs = nextAvailableAt
       ? Math.max(0, nextAvailableAt.getTime() - now)

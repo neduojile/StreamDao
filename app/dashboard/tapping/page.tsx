@@ -1,5 +1,6 @@
 "use client";
 
+import { DashboardSidebarNav, DashboardMobileNav } from "@/app/dashboard/dashboard-navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -15,6 +16,7 @@ type Status = {
 export default function TappingPage() {
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
+  const [now, setNow] = useState(0);
 
   useEffect(() => {
     fetch("/api/tapping", { cache: "no-store" })
@@ -34,7 +36,12 @@ export default function TappingPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const cooldown = status?.cooldownSeconds ?? 0;
+  useEffect(() => {
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const cooldown = status?.nextAvailableAt ? Math.max(0, Math.ceil((new Date(status.nextAvailableAt).getTime() - now) / 1000)) : 0;
   const hours = Math.floor(cooldown / 3600);
   const minutes = Math.floor((cooldown % 3600) / 60);
 
@@ -46,14 +53,7 @@ export default function TappingPage() {
           <span>stream<span>dao</span></span>
         </Link>
         <div className="sidebar-label">WORKSPACE</div>
-        <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link"><span className="nav-icon">✧</span> Mining Tasks</Link>
-          <Link href="/dashboard/tapping" className="dashboard-nav-link active"><span className="nav-icon">●</span> Tapping</Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link"><span className="nav-icon">◈</span> WHOT</Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
-        </nav>
+        <DashboardSidebarNav />
         <div className="sidebar-divider" />
         <div className="sidebar-label">YOUR ACCOUNT</div>
         <Link href="/dashboard/profile" className="dashboard-nav-link">My Profile</Link>
@@ -117,18 +117,11 @@ export default function TappingPage() {
             <span className="tapping-status-icon">{cooldown > 0 ? "◷" : "✓"}</span>
           </section>
 
-          <p className="tapping-footnote">A 24-hour cooldown begins after each successful reward claim. Your progress stays available until you complete and claim your session.</p>
+          <p className="tapping-footnote">Your tapping session resets at 00:00 Nigeria time after a successful reward claim. Your progress stays available until you complete and claim your session.</p>
         </div>
       </section>
 
-      <nav className="dashboard-mobile-nav">
-        <Link href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></Link>
-        <Link href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></Link>
-        <Link href="/dashboard/tapping" className="mobile-nav-active"><span className="mobile-nav-icon">●</span><small>Tapping</small></Link>
-        <Link href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></Link>
-        <Link href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></Link>
-        <Link href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></Link>
-      </nav>
+      <DashboardMobileNav />
     </main>
   );
 }
