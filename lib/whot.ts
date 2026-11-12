@@ -2,14 +2,17 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export const DEFAULT_WHOT_PRIZES = [
-  { label: "€0.05", amount: "0.05", probability: "30.0000", color: "#B9F34B", sortOrder: 0 },
-  { label: "€0.10", amount: "0.10", probability: "25.0000", color: "#8FDA3D", sortOrder: 1 },
-  { label: "€0.15", amount: "0.15", probability: "18.0000", color: "#C9FF6C", sortOrder: 2 },
-  { label: "€0.20", amount: "0.20", probability: "12.0000", color: "#5CAE43", sortOrder: 3 },
-  { label: "€0.25", amount: "0.25", probability: "8.0000", color: "#D6F27D", sortOrder: 4 },
-  { label: "€0.50", amount: "0.50", probability: "5.0000", color: "#3D8242", sortOrder: 5 },
-  { label: "€1.00", amount: "1.00", probability: "1.8000", color: "#D7B45A", sortOrder: 6 },
-  { label: "€3.00", amount: "3.00", probability: "0.2000", color: "#F1D17B", sortOrder: 7 },
+  { label: "€10.00", amount: "10.00", probability: "0.5000", color: "#B9F34B", sortOrder: 0 },
+  { label: "€9.00", amount: "9.00", probability: "1.0000", color: "#8FDA3D", sortOrder: 1 },
+  { label: "€8.00", amount: "8.00", probability: "1.5000", color: "#C9FF6C", sortOrder: 2 },
+  { label: "€7.00", amount: "7.00", probability: "2.0000", color: "#5CAE43", sortOrder: 3 },
+  { label: "€6.00", amount: "6.00", probability: "3.0000", color: "#D6F27D", sortOrder: 4 },
+  { label: "€5.00", amount: "5.00", probability: "5.0000", color: "#3D8242", sortOrder: 5 },
+  { label: "€4.00", amount: "4.00", probability: "7.0000", color: "#D7B45A", sortOrder: 6 },
+  { label: "€3.00", amount: "3.00", probability: "10.0000", color: "#F1D17B", sortOrder: 7 },
+  { label: "€2.00", amount: "2.00", probability: "15.0000", color: "#B9F34B", sortOrder: 8 },
+  { label: "€1.00", amount: "1.00", probability: "20.0000", color: "#8FDA3D", sortOrder: 9 },
+  { label: "€0.50", amount: "0.50", probability: "35.0000", color: "#C9FF6C", sortOrder: 10 },
 ];
 
 export function getLagosDayKey(date = new Date()) {

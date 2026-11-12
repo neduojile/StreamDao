@@ -6114,3 +6114,377 @@ body {
   padding: 8px 10px;
   white-space: nowrap;
 }
+/* TAPPING BRIEFING */
+.tapping-content { padding-bottom: 110px; }
+.tapping-hero {
+  position: relative; display: flex; justify-content: space-between; align-items: center;
+  min-height: 320px; padding: 42px 48px; overflow: hidden;
+  border: 1px solid rgba(185,243,75,.17); border-radius: 25px;
+  background: radial-gradient(circle at 82% 50%, rgba(185,243,75,.13), transparent 34%), linear-gradient(120deg,#111a12,#0c110d);
+}
+.tapping-hero-copy { position: relative; z-index: 2; max-width: 510px; }
+.tapping-hero-copy h2 { margin: 15px 0 12px; font-size: clamp(32px,4vw,48px); line-height: 1.12; letter-spacing: -2px; }
+.tapping-hero-copy h2 span { color: var(--accent); }
+.tapping-hero-copy p { max-width: 410px; color: var(--muted); line-height: 1.7; }
+.tapping-start-button {
+  display: inline-flex; align-items: center; gap: 24px; margin-top: 20px; padding: 14px 21px;
+  border-radius: 12px; background: var(--accent); color: #10170b; font-weight: 800; text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+.tapping-start-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(185,243,75,.2); }
+.tapping-hero-visual { position: relative; display: grid; place-items: center; width: 270px; height: 240px; flex-shrink: 0; }
+.tapping-orbit { position: absolute; border: 1px solid rgba(185,243,75,.17); border-radius: 50%; }
+.tapping-orbit-one { width: 210px; height: 210px; }
+.tapping-orbit-two { width: 165px; height: 165px; border-style: dashed; animation: tapping-spin 24s linear infinite; }
+.tapping-coin {
+  display: grid; place-items: center; width: 112px; height: 112px; border-radius: 50%;
+  color: #17200e; font-size: 48px; font-weight: 900;
+  background: radial-gradient(circle at 35% 25%,#efffc8,#b9f34b 60%,#679b24);
+  box-shadow: 0 0 55px rgba(185,243,75,.3), inset 0 3px 8px rgba(255,255,255,.7);
+}
+.tapping-coin span { font-size: 19px; }
+.tapping-floating-reward { position: absolute; right: 0; bottom: 23px; padding: 9px 14px; border: 1px solid rgba(185,243,75,.2); border-radius: 12px; background: #172016; color: var(--accent); font-weight: 800; }
+.tapping-spark { position: absolute; color: var(--accent); }
+.spark-one { top: 22px; right: 42px; font-size: 24px; }
+.spark-two { left: 22px; bottom: 35px; font-size: 19px; }
+@keyframes tapping-spin { to { transform: rotate(360deg); } }
+.tapping-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 15px; margin-top: 18px; }
+.tapping-stats article { padding: 21px 23px; border: 1px solid var(--border); border-radius: 17px; background: var(--surface); }
+.tapping-stats article span { display: block; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+.tapping-stats article strong { display: block; margin-top: 10px; font-size: 25px; }
+.tapping-stats article strong small { color: var(--muted); font-size: 12px; }
+.tapping-how { margin-top: 38px; }
+.tapping-section-heading h2 { margin: 8px 0 19px; font-size: 23px; }
+.tapping-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
+.tapping-steps article { display: flex; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.018); }
+.tapping-step-number { color: var(--accent); font-size: 13px; font-weight: 800; }
+.tapping-steps h3 { margin: 0 0 7px; font-size: 14px; }
+.tapping-steps p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.tapping-session-status { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 20px; padding: 22px 25px; border: 1px solid rgba(185,243,75,.15); border-radius: 17px; background: rgba(185,243,75,.035); }
+.tapping-session-status h3 { margin: 8px 0 5px; font-size: 17px; }
+.tapping-session-status p,.tapping-footnote { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.tapping-session-status p { margin: 0; }
+.tapping-status-icon { display: grid; place-items: center; width: 43px; height: 43px; flex-shrink: 0; border-radius: 50%; background: rgba(185,243,75,.12); color: var(--accent); font-size: 23px; }
+.tapping-footnote { margin-top: 15px; }
+@media(max-width:760px) {
+  .tapping-content { padding-bottom: 115px; }
+  .tapping-hero { min-height: auto; padding: 28px 23px; }
+  .tapping-hero-visual { width: 115px; height: 160px; margin-right: -16px; }
+  .tapping-orbit-one { width: 125px; height: 125px; }
+  .tapping-orbit-two { width: 100px; height: 100px; }
+  .tapping-coin { width: 72px; height: 72px; font-size: 32px; }
+  .tapping-floating-reward { right: -8px; bottom: 0; font-size: 11px; }
+  .tapping-hero-copy h2 { font-size: 31px; letter-spacing: -1px; }
+  .tapping-hero-copy p { font-size: 12px; }
+  .tapping-stats { gap: 8px; }
+  .tapping-stats article { padding: 14px 11px; }
+  .tapping-stats article span { font-size: 8px; }
+  .tapping-stats article strong { font-size: 17px; }
+  .tapping-steps { grid-template-columns: 1fr; }
+  .tapping-steps article { padding: 16px; }
+}
+@media(max-width:390px) {
+  .tapping-hero-visual { display: none; }
+  .tapping-hero-copy { max-width: 100%; }
+}
+
+/* TAPPING GAME ARENA */
+.tapping-game-content { padding-bottom: 115px; }
+.tapping-game-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:22px; }
+.tapping-game-heading h2 { margin:9px 0 5px; font-size:clamp(25px,3vw,34px); letter-spacing:-1px; }
+.tapping-game-heading h2 span { color:var(--accent); }
+.tapping-game-heading p { margin:0; color:var(--muted); font-size:13px; }
+.tapping-wallet-pill { display:flex; flex-direction:column; gap:7px; padding:13px 18px; border:1px solid var(--border); border-radius:14px; background:var(--surface); }
+.tapping-wallet-pill span { color:var(--muted); font-size:9px; font-weight:700; letter-spacing:1px; }
+.tapping-wallet-pill strong { color:var(--accent); font-size:21px; }
+.tapping-game-panel { position:relative; max-width:780px; margin:0 auto; padding:30px 38px 26px; overflow:hidden; border:1px solid rgba(185,243,75,.15); border-radius:25px; background:radial-gradient(ellipse at 50% 44%,rgba(185,243,75,.075),transparent 48%),linear-gradient(145deg,#121a13,#0b100c); }
+.tapping-game-topline { display:flex; justify-content:space-between; color:var(--muted); font-size:10px; font-weight:800; letter-spacing:1px; }
+.tapping-game-topline span:last-child { color:var(--accent); font-size:12px; }
+.tapping-progress-track { height:7px; margin-top:12px; overflow:hidden; border-radius:20px; background:rgba(255,255,255,.07); }
+.tapping-progress-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,#80bd31,var(--accent)); transition:width .25s ease; box-shadow:0 0 14px rgba(185,243,75,.25); }
+.tapping-game-orb-area { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:350px; }
+.tapping-game-halo { position:absolute; width:290px; height:290px; border-radius:50%; background:rgba(185,243,75,.045); filter:blur(25px); }
+.tapping-game-ring { position:relative; display:grid; place-items:center; width:258px; height:258px; padding:10px; border-radius:50%; box-shadow:0 0 65px rgba(185,243,75,.08); transition:background .2s; }
+.tapping-game-ring::before { content:""; position:absolute; inset:5px; border:1px solid rgba(255,255,255,.08); border-radius:50%; }
+.tapping-game-button { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:220px; height:220px; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#18220e; background:radial-gradient(circle at 34% 24%,#f1ffd2 0%,#c8fa76 32%,#a7e63d 67%,#679c25 100%); box-shadow:inset 0 5px 13px rgba(255,255,255,.65),inset 0 -10px 18px rgba(48,83,12,.2),0 15px 35px rgba(0,0,0,.35),0 0 45px rgba(185,243,75,.18); cursor:pointer; transition:transform .12s,filter .2s; }
+.tapping-game-button:hover:not(:disabled) { filter:brightness(1.07); transform:scale(1.025); }
+.tapping-game-button:active:not(:disabled) { transform:scale(.94); }
+.tapping-game-button:disabled { cursor:not-allowed; }
+.tapping-game-button.is-tapping { animation:tap-pulse .18s ease; }
+.tapping-game-button.is-complete { filter:saturate(.8); }
+.tapping-button-symbol { display:grid; place-items:center; width:65px; height:65px; border:2px solid rgba(23,37,10,.35); border-radius:50%; font-size:43px; font-weight:900; }
+.tapping-game-button strong { font-size:22px; letter-spacing:3px; }
+.tapping-game-button small { font-size:8px; font-weight:900; letter-spacing:1.5px; }
+.tapping-orb-caption { position:relative; margin-top:15px; color:var(--muted); font-size:11px; }
+@keyframes tap-pulse { 50% { transform:scale(.94); } }
+.tapping-game-milestones { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; max-width:550px; margin:0 auto; }
+.tapping-game-milestones div { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--muted); font-size:10px; font-weight:800; }
+.tapping-game-milestones i { width:7px; height:7px; border-radius:50%; background:#455044; }
+.tapping-game-milestones .reached { color:var(--accent); }
+.tapping-game-milestones .reached i { background:var(--accent); box-shadow:0 0 10px rgba(185,243,75,.6); }
+.tapping-game-hint { margin:20px 0 0; color:var(--muted); text-align:center; font-size:12px; }
+.tapping-claim-button { display:block; width:min(100%,390px); margin:22px auto 0; padding:15px 20px; border:0; border-radius:12px; color:#11180b; background:var(--accent); font-size:14px; font-weight:900; cursor:pointer; transition:transform .2s,box-shadow .2s; }
+.tapping-claim-button:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 25px rgba(185,243,75,.2); }
+.tapping-claim-button:disabled { opacity:.6; cursor:wait; }
+.tapping-message { max-width:550px; margin:15px auto 0; padding:12px 15px; border-radius:10px; text-align:center; font-size:12px; line-height:1.5; }
+.tapping-error { border:1px solid rgba(255,100,100,.2); background:rgba(255,80,80,.07); color:#ffaaa3; }
+.tapping-success { border:1px solid rgba(185,243,75,.2); background:rgba(185,243,75,.07); color:#d5ff9d; }
+.tapping-cooldown-panel { display:flex; justify-content:center; align-items:center; gap:14px; width:min(100%,390px); margin:20px auto 0; padding:15px; border:1px solid rgba(185,243,75,.18); border-radius:13px; background:rgba(185,243,75,.045); }
+.tapping-cooldown-panel>span { font-size:24px; }
+.tapping-cooldown-panel div { display:flex; flex-direction:column; gap:4px; }
+.tapping-cooldown-panel strong { color:var(--muted); font-size:11px; }
+.tapping-cooldown-panel b { color:var(--accent); font-size:20px; letter-spacing:2px; }
+.tapping-game-footer { display:flex; justify-content:space-between; gap:12px; max-width:780px; margin:16px auto 0; padding:15px 18px; border:1px solid var(--border); border-radius:14px; background:var(--surface); }
+.tapping-game-footer span { display:flex; flex-direction:column; gap:5px; color:var(--muted); font-size:8px; font-weight:700; letter-spacing:.6px; }
+.tapping-game-footer strong { color:var(--foreground); font-size:10px; letter-spacing:0; }
+@media(max-width:760px) {
+  .tapping-game-content { padding-bottom:115px; }
+  .tapping-game-heading { align-items:flex-start; flex-direction:column; }
+  .tapping-wallet-pill { flex-direction:row; align-items:center; justify-content:space-between; width:100%; }
+  .tapping-game-panel { padding:22px 16px; }
+  .tapping-game-orb-area { min-height:300px; }
+  .tapping-game-ring { width:225px; height:225px; }
+  .tapping-game-button { width:190px; height:190px; }
+  .tapping-game-footer { flex-wrap:wrap; }
+  .tapping-game-footer span { flex:1 1 28%; }
+}
+
+/* TAPPING INSTANT FEEDBACK + PARTICLE BURSTS */
+.tapping-game-orb-area { isolation:isolate; }
+.tapping-particle-layer { position:absolute; inset:0; z-index:5; overflow:visible; pointer-events:none; }
+.tapping-particle { position:absolute; width:9px; height:9px; margin:-4px; border-radius:50%; background:radial-gradient(circle,#fff 0%,#eaffb9 25%,#a9ed43 65%,rgba(169,237,67,0) 100%); box-shadow:0 0 13px rgba(185,243,75,.9); animation:tapping-particle-flight .7s cubic-bezier(.12,.7,.25,1) forwards; }
+.tapping-particle:nth-child(3n) { width:6px; height:6px; background:#fff; }
+.tapping-particle:nth-child(3n + 1) { width:12px; height:12px; }
+@keyframes tapping-particle-flight {
+  0% { opacity:1; transform:translate(0,0) scale(.35); }
+  18% { opacity:1; transform:translate(calc(var(--particle-x) * .35),calc(var(--particle-y) * .35)) scale(1.15); }
+  100% { opacity:0; transform:translate(var(--particle-x),var(--particle-y)) scale(0); }
+}
+.tapping-game-button { -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; }
+.tapping-game-button:active:not(:disabled) { transform:scale(.91); filter:brightness(1.16); }
+.tapping-game-button.is-tapping { animation:tap-pulse .13s ease; }
+.tapping-game-ring { transition:background .12s linear; }
+.tapping-progress-fill { transition:width .12s linear; }
+
+/* PREMIUM LONG-TRAIL FALLING PARTICLES */
+.tapping-particle-layer { overflow:visible; }
+.tapping-particle {
+  width:5px;
+  height:25px;
+  border-radius:999px;
+  background:linear-gradient(to bottom,#fff 0%,#eaffb9 22%,#b9f34b 58%,rgba(185,243,75,0) 100%);
+  box-shadow:0 0 10px rgba(185,243,75,.9),0 0 22px rgba(185,243,75,.45);
+  transform-origin:center top;
+  animation:tapping-particle-flight 1.45s cubic-bezier(.12,.65,.25,1) forwards;
+}
+.tapping-particle:nth-child(3n) { width:3px; height:34px; filter:blur(.3px); }
+.tapping-particle:nth-child(3n + 1) {
+  width:7px;
+  height:18px;
+  background:linear-gradient(to bottom,#fff 0%,#dfff9b 35%,rgba(185,243,75,0) 100%);
+}
+@keyframes tapping-particle-flight {
+  0% { opacity:0; transform:translate(0,0) rotate(0deg) scale(.25); }
+  12% { opacity:1; transform:translate(calc(var(--particle-x) * .3),calc(var(--particle-y) * .3)) rotate(35deg) scale(1); }
+  48% { opacity:.95; transform:translate(calc(var(--particle-x) * .8),calc(var(--particle-y) * .8 + 20px)) rotate(110deg) scale(.85); }
+  100% { opacity:0; transform:translate(var(--particle-x),calc(var(--particle-y) + 155px)) rotate(210deg) scale(.15); }
+}
+.tapping-game-button { transition:transform .08s ease,filter .12s ease; touch-action:manipulation; }
+.tapping-game-ring { transition:background .1s linear; }
+.tapping-progress-fill { transition:width .1s linear; }
+
+/* STREAMDAO COLOURFUL ENERGY BURST */
+.tapping-particle-layer {
+  position:absolute;
+  inset:-100px;
+  z-index:5;
+  overflow:visible;
+  pointer-events:none;
+}
+
+.tapping-particle {
+  position:absolute;
+  width:5px;
+  height:5px;
+  margin:-2px;
+  border-radius:50%;
+  background:var(--particle-color,#b9f34b);
+  box-shadow:0 0 8px var(--particle-color),0 0 20px var(--particle-color);
+  animation:energy-spread .85s cubic-bezier(.12,.7,.25,1) forwards;
+}
+
+.tapping-particle:nth-child(6n) {
+  width:4px;
+  height:27px;
+  border-radius:10px;
+}
+
+.tapping-particle:nth-child(6n + 1) {
+  width:8px;
+  height:8px;
+}
+
+.tapping-particle:nth-child(6n + 2) {
+  width:3px;
+  height:20px;
+}
+
+@keyframes energy-spread {
+  0% {
+    opacity:0;
+    transform:translate(0,0) rotate(0deg) scale(.2);
+  }
+  15% {
+    opacity:1;
+    transform:translate(
+      calc(var(--particle-x) * .25),
+      calc(var(--particle-y) * .25)
+    ) rotate(60deg) scale(1.3);
+  }
+  70% {
+    opacity:1;
+    transform:translate(
+      calc(var(--particle-x) * .8),
+      calc(var(--particle-y) * .8)
+    ) rotate(220deg) scale(.9);
+  }
+  100% {
+    opacity:0;
+    transform:translate(
+      var(--particle-x),
+      var(--particle-y)
+    ) rotate(360deg) scale(.1);
+  }
+}
+
+.tapping-energy-ring {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100px;
+  height:100px;
+  border:2px solid rgba(185,243,75,.8);
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(.2);
+  animation:energy-ring-expand .75s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes energy-ring-expand {
+  0% { opacity:.9; transform:translate(-50%,-50%) scale(.2); }
+  100% { opacity:0; transform:translate(-50%,-50%) scale(3.5); }
+}
+
+.tapping-game-button:active:not(:disabled) {
+  transform:scale(.89);
+  filter:brightness(1.25) saturate(1.3);
+}
+
+.tapping-game-ring {
+  transition:background .1s linear;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .tapping-particle,.tapping-energy-ring {
+    animation-duration:.2s;
+  }
+}
+
+/* STREAMDAO BUBBLE POP EXPERIENCE */
+.tapping-particle-layer {
+  position: absolute;
+  inset: -150px;
+  z-index: 20;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tapping-particle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--particle-color, #a3ff5f);
+  border: 2px solid rgba(255,255,255,.85);
+  box-shadow:
+    0 0 10px var(--particle-color, #a3ff5f),
+    0 0 25px var(--particle-color, #a3ff5f),
+    inset -3px -3px 6px rgba(0,0,0,.15),
+    inset 3px 3px 6px rgba(255,255,255,.8);
+  animation: bubble-pop-spread 1s cubic-bezier(.16,.8,.25,1) forwards;
+  will-change: transform, opacity;
+}
+
+.tapping-particle::before {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  top: 3px;
+  left: 4px;
+  border-radius: 50%;
+  background: white;
+  opacity: .95;
+}
+
+.tapping-particle::after {
+  content: "✦";
+  position: absolute;
+  top: -13px;
+  right: -12px;
+  color: white;
+  font-size: 12px;
+  text-shadow: 0 0 8px var(--particle-color, #a3ff5f);
+  animation: sparkle-pop .7s ease-out forwards;
+}
+
+.tapping-particle:nth-child(6n+1) { --particle-color: #a3ff5f; width: 22px; height: 22px; }
+.tapping-particle:nth-child(6n+2) { --particle-color: #35d9ff; width: 15px; height: 15px; }
+.tapping-particle:nth-child(6n+3) { --particle-color: #ff65c5; width: 19px; height: 19px; }
+.tapping-particle:nth-child(6n+4) { --particle-color: #ffd75e; width: 13px; height: 13px; }
+.tapping-particle:nth-child(6n+5) { --particle-color: #a78bfa; width: 24px; height: 24px; }
+.tapping-particle:nth-child(6n) { --particle-color: #ff895e; width: 16px; height: 16px; }
+
+@keyframes bubble-pop-spread {
+  0% {
+    transform: translate(-50%, -50%) scale(.15);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  75% { opacity: .9; }
+  100% {
+    transform: translate(
+      calc(-50% + var(--particle-x, 0px)),
+      calc(-50% + var(--particle-y, -100px))
+    ) scale(.25);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkle-pop {
+  0% { transform: scale(.2) rotate(0deg); opacity: 0; }
+  30% { transform: scale(1.5) rotate(90deg); opacity: 1; }
+  100% { transform: scale(0) rotate(180deg); opacity: 0; }
+}
+
+.tapping-energy-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #a3ff5f;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bubble-ring 700ms ease-out forwards;
+}
+
+@keyframes bubble-ring {
+  from { transform: translate(-50%, -50%) scale(.3); opacity: 1; }
+  to { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+}

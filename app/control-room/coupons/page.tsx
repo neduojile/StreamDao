@@ -44,9 +44,41 @@ export default function CouponsPage() {
 
       if (!response.ok) throw new Error(data.error || "Unable to load coupons.");
 
-      setBatches(data.batches || []);
+      const loadedBatches = data.batches || [];
+      setBatches(loadedBatches);
       setStats(data.stats || []);
       setCustomerServiceUrl(data.customerServiceUrl || "");
+
+      const latestBatch = loadedBatches[0];
+
+      if (latestBatch) {
+        const clearedKey = `streamdao:coupon-display-cleared:${latestBatch.id}`;
+
+        if (localStorage.getItem(clearedKey) === "1") {
+          setCodes([]);
+          setSavedCoupons([]);
+          setVisibleBatchId("");
+        } else {
+          const codesResponse = await fetch(
+            `/api/admin/coupons?batchId=${encodeURIComponent(latestBatch.id)}`,
+            { cache: "no-store" }
+          );
+
+          const codesData = await codesResponse.json();
+
+          if (!codesResponse.ok) {
+            throw new Error(codesData.error || "Unable to load saved coupon codes.");
+          }
+
+          setSavedCoupons(codesData.coupons || []);
+          setCodes([]);
+          setVisibleBatchId(latestBatch.id);
+        }
+      } else {
+        setCodes([]);
+        setSavedCoupons([]);
+        setVisibleBatchId("");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to load coupons.");
     } finally {
@@ -168,10 +200,17 @@ export default function CouponsPage() {
   }
 
   function clearCodeDisplay() {
+    if (visibleBatchId) {
+      localStorage.setItem(
+        `streamdao:coupon-display-cleared:${visibleBatchId}`,
+        "1"
+      );
+    }
+
     setCodes([]);
     setSavedCoupons([]);
     setVisibleBatchId("");
-    setNotice("Coupon display cleared. Your codes remain saved and usable.");
+    setNotice("Display cleared. Your coupon codes remain active and usable.");
   }
   async function saveCustomerService(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -373,65 +412,6 @@ export default function CouponsPage() {
           </section>
         )}
 
-        <section className="coupon-panel coupon-batches-panel">
-          <div className="premium-section-heading">
-            <div>
-              <span className="admin-eyebrow">GENERATION RECORDS</span>
-              <h2>Coupon batches</h2>
-              <button
-                className="coupon-danger-button"
-                type="button"
-                disabled={!!deletingScope || loading}
-                onClick={() => revokeCoupons("all")}
-              >
-                {deletingScope === "all" ? "Revoking..." : "Revoke all unused codes"}
-              </button>
-            </div>
-            <button className="coupon-refresh-button" type="button" onClick={loadData}>Refresh ↻</button>
-          </div>
-
-          {loading ? (
-            <p className="coupon-empty">Loading coupon batches...</p>
-          ) : batches.length === 0 ? (
-            <p className="coupon-empty">No coupon batches have been generated yet.</p>
-          ) : (
-            <div className="coupon-table-wrap">
-              <table className="coupon-table">
-                <thead>
-                  <tr><th>Batch</th><th>Codes</th><th>Created</th><th>Expires</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                  {batches.map((batch) => (
-                    <tr key={batch.id}>
-                      <td><strong>{batch.name || "Untitled batch"}</strong><small>{batch.id.slice(-8)}</small></td>
-                      <td>{batch._count?.coupons ?? batch.totalCodes}</td>
-                      <td>{new Date(batch.createdAt).toLocaleDateString()}</td>
-                      <td>{new Date(batch.expiresAt).toLocaleDateString()}</td>
-                      <td>
-                        <button
-                          className="coupon-secondary-button"
-                          type="button"
-                          disabled={!!deletingScope || loadingCodes}
-                          onClick={() => showSavedCodes(batch.id)}
-                        >
-                          Show codes
-                        </button>
-                        <button
-                          className="coupon-danger-button coupon-danger-small"
-                          type="button"
-                          disabled={!!deletingScope || loading}
-                          onClick={() => revokeCoupons("batch", batch.id)}
-                        >
-                          {deletingScope === batch.id ? "Revoking..." : "Delete batch"}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
       </main>
     </AdminShell>
   );

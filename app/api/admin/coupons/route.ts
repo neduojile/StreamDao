@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
         attempts++;
 
         const remaining = count - issuedCodes.size;
-        const candidateCount = Math.min(500, Math.max(remaining, Math.ceil(remaining * 1.15)));
+        const candidateCount = remaining;
         const candidates = new Map<string, string>();
 
         while (candidates.size < candidateCount) {

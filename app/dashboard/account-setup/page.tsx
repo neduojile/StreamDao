@@ -9,6 +9,9 @@ type PayoutProfile = {
   accountName: string | null;
   accountNumber: string | null;
   bankCode: string | null;
+  countryCode: string | null;
+  countryName: string | null;
+  payoutCurrency: string | null;
   cryptoNetwork: string | null;
   walletAddress: string | null;
 };
@@ -20,6 +23,9 @@ export default function AccountSetupPage() {
     accountName: "",
     accountNumber: "",
     bankCode: "",
+    countryCode: "NG",
+    countryName: "Nigeria",
+    payoutCurrency: "NGN",
     cryptoNetwork: "",
     walletAddress: "",
   });
@@ -42,6 +48,9 @@ export default function AccountSetupPage() {
             accountName: profile.accountName ?? "",
             accountNumber: profile.accountNumber ?? "",
             bankCode: profile.bankCode ?? "",
+            countryCode: profile.countryCode ?? "NG",
+            countryName: profile.countryName ?? "Nigeria",
+            payoutCurrency: profile.payoutCurrency ?? "NGN",
             cryptoNetwork: profile.cryptoNetwork ?? "",
             walletAddress: profile.walletAddress ?? "",
           });
@@ -81,6 +90,16 @@ export default function AccountSetupPage() {
 
   const inputClass = "w-full rounded-xl border border-white/10 bg-[#101b16] px-4 py-3 text-sm text-white outline-none transition focus:border-lime-400/60";
   const labelClass = "mb-2 block text-xs font-medium text-gray-400";
+
+  const countries = [
+    { name: "Nigeria", code: "NG", currency: "NGN" },
+    { name: "Ghana", code: "GH", currency: "GHS" },
+    { name: "Kenya", code: "KE", currency: "KES" },
+    { name: "Egypt", code: "EG", currency: "EGP" },
+    { name: "South Africa", code: "ZA", currency: "ZAR" },
+    { name: "Cameroon", code: "CM", currency: "XAF" },
+    { name: "Zambia", code: "ZM", currency: "ZMW" },
+  ];
 
   return (
     <main className="min-h-screen bg-[#07100c] px-4 pb-28 pt-7 text-white md:px-8 md:pb-10">
@@ -124,6 +143,37 @@ export default function AccountSetupPage() {
               {method === "BANK" ? (
                 <>
                   <div>
+                    <label className={labelClass}>Country</label>
+                    <select
+                      required
+                      className={inputClass}
+                      value={form.countryCode ?? "NG"}
+                      onChange={(e) => {
+                        const selected = countries.find(
+                          (country) => country.code === e.target.value
+                        );
+                        if (selected) {
+                          setForm((current) => ({
+                            ...current,
+                            countryCode: selected.code,
+                            countryName: selected.name,
+                            payoutCurrency: selected.currency,
+                          }));
+                        }
+                      }}
+                    >
+                      {countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.name} ({country.currency})
+                        </option>
+                      ))}
+                    </select>
+                    <p className="mt-2 text-xs text-lime-300">
+                      Payout currency: {form.payoutCurrency || "NGN"}
+                    </p>
+                  </div>
+
+                  <div>
                     <label className={labelClass}>Bank Name</label>
                     <input required className={inputClass} value={form.bankName} onChange={(e) => updateField("bankName", e.target.value)} placeholder="Enter bank name" />
                   </div>
@@ -144,7 +194,7 @@ export default function AccountSetupPage() {
                 <>
                   <div>
                     <label className={labelClass}>Network</label>
-                    <input required className={inputClass} value={form.cryptoNetwork} onChange={(e) => updateField("cryptoNetwork", e.target.value)} placeholder="e.g. TRON (TRC20), Ethereum" />
+                    <select required className={inputClass} value={form.cryptoNetwork} onChange={(e) => updateField("cryptoNetwork", e.target.value)}><option value="">Select a network</option><option value="Bitcoin (BTC)">Bitcoin (BTC)</option><option value="Ethereum (ERC-20)">Ethereum (ERC-20)</option><option value="BNB Smart Chain (BEP-20)">BNB Smart Chain (BEP-20)</option><option value="TRON (TRC-20)">TRON (TRC-20)</option><option value="Solana">Solana</option><option value="Polygon (POL)">Polygon (POL)</option><option value="Arbitrum One">Arbitrum One</option><option value="Base">Base</option><option value="Avalanche C-Chain">Avalanche C-Chain</option><option value="Optimism">Optimism</option></select>
                   </div>
                   <div>
                     <label className={labelClass}>Wallet Address</label>

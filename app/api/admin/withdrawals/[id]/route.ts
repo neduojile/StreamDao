@@ -13,6 +13,12 @@ const walletFields: Record<string, string> = {
 
 const combinedWallets = ["REFERRAL", "TASK", "WHOT", "TAPPING"] as const;
 
+const transitions: Record<string, string[]> = {
+  PENDING: ["PROCESSING", "REJECTED"],
+  PROCESSING: ["APPROVED", "REJECTED"],
+  APPROVED: ["PAID", "REJECTED"],
+};
+
 export async function PATCH(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -26,77 +32,61 @@ export async function PATCH(
   try {
     const { id } = await context.params;
     const body = await request.json();
-
     const status = String(body.status ?? "").toUpperCase();
     const adminNote = String(body.adminNote ?? "").trim();
 
-    if (!["APPROVED", "REJECTED"].includes(status)) {
-      return NextResponse.json(
-        { error: "Invalid withdrawal action." },
-        { status: 400 }
-      );
+    if (!["PROCESSING", "APPROVED", "PAID", "REJECTED"].includes(status)) {
+      return NextResponse.json({ error: "Invalid withdrawal action." }, { status: 400 });
     }
 
     if (adminNote.length > 1000) {
-      return NextResponse.json(
-        { error: "Admin note cannot exceed 1000 characters." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Admin note cannot exceed 1000 characters." }, { status: 400 });
     }
 
     const result = await prisma.$transaction(
       async (tx) => {
-        const withdrawal = await tx.withdrawal.findUnique({
-          where: { id },
-        });
+        const withdrawal = await tx.withdrawal.findUnique({ where: { id } });
 
-        if (!withdrawal) {
-          throw new Error("WITHDRAWAL_NOT_FOUND");
+        if (!withdrawal) throw new Error("WITHDRAWAL_NOT_FOUND");
+
+        if (!transitions[withdrawal.status]?.includes(status)) {
+          throw new Error("INVALID_STATUS_TRANSITION");
         }
 
-        if (withdrawal.status !== "PENDING") {
-          throw new Error("WITHDRAWAL_ALREADY_PROCESSED");
-        }
+        const now = new Date();
+
+        const timestampData =
+          status === "PROCESSING" ? { processingAt: now } :
+          status === "APPROVED" ? { approvedAt: now } :
+          status === "PAID" ? { paidAt: now, processedAt: now } :
+          { processedAt: now };
 
         const updated = await tx.withdrawal.updateMany({
-          where: { id, status: "PENDING" },
+          where: { id, status: withdrawal.status },
           data: {
             status,
-            adminNote: adminNote || null,
-            processedAt: new Date(),
+            adminNote: adminNote || withdrawal.adminNote,
+            ...timestampData,
           },
         });
 
-        if (updated.count !== 1) {
-          throw new Error("WITHDRAWAL_ALREADY_PROCESSED");
-        }
+        if (updated.count !== 1) throw new Error("WITHDRAWAL_ALREADY_PROCESSED");
 
         if (status === "REJECTED") {
           if (withdrawal.walletType === "COMBINED") {
-            const rawBreakdown = withdrawal.walletBreakdown;
+            const raw = withdrawal.walletBreakdown;
 
-            if (
-              !rawBreakdown ||
-              typeof rawBreakdown !== "object" ||
-              Array.isArray(rawBreakdown)
-            ) {
+            if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
               throw new Error("INVALID_WALLET_BREAKDOWN");
             }
 
-            const breakdown = rawBreakdown as Record<string, unknown>;
-            const refunds: {
-              walletType: string;
-              amount: Prisma.Decimal;
-              balanceField: string;
-            }[] = [];
+            const breakdown = raw as Record<string, unknown>;
+            const refunds: { walletType: string; amount: Prisma.Decimal; balanceField: string }[] = [];
 
             for (const walletType of combinedWallets) {
               const rawAmount = breakdown[walletType];
 
-              if (
-                typeof rawAmount !== "string" &&
-                typeof rawAmount !== "number"
-              ) {
+              if (typeof rawAmount !== "string" && typeof rawAmount !== "number") {
                 throw new Error("INVALID_WALLET_BREAKDOWN");
               }
 
@@ -127,9 +117,7 @@ export async function PATCH(
             for (const refund of refunds) {
               await tx.wallet.update({
                 where: { userId: withdrawal.userId },
-                data: {
-                  [refund.balanceField]: { increment: refund.amount },
-                },
+                data: { [refund.balanceField]: { increment: refund.amount } },
               });
 
               await tx.transaction.create({
@@ -138,7 +126,7 @@ export async function PATCH(
                   walletType: refund.walletType,
                   type: "CREDIT",
                   category: "WITHDRAWAL_REFUND",
-                  description: `Refund for rejected withdrawal ${withdrawal.id} - ${refund.walletType}`,
+                  description: `Refund for rejected withdrawal ${id} - ${refund.walletType}`,
                   amount: refund.amount,
                   status: "COMPLETED",
                 },
@@ -147,15 +135,11 @@ export async function PATCH(
           } else {
             const balanceField = walletFields[withdrawal.walletType];
 
-            if (!balanceField) {
-              throw new Error("INVALID_WALLET_TYPE");
-            }
+            if (!balanceField) throw new Error("INVALID_WALLET_TYPE");
 
             await tx.wallet.update({
               where: { userId: withdrawal.userId },
-              data: {
-                [balanceField]: { increment: withdrawal.amount },
-              },
+              data: { [balanceField]: { increment: withdrawal.amount } },
             });
 
             await tx.transaction.create({
@@ -164,65 +148,65 @@ export async function PATCH(
                 walletType: withdrawal.walletType,
                 type: "CREDIT",
                 category: "WITHDRAWAL_REFUND",
-                description: `Refund for rejected withdrawal ${withdrawal.id}`,
+                description: `Refund for rejected withdrawal ${id}`,
                 amount: withdrawal.amount,
                 status: "COMPLETED",
               },
             });
           }
-        } else {
-          await tx.transaction.updateMany({
+        }
+
+        if (status === "PAID") {
+          const completed = await tx.transaction.updateMany({
             where: {
               userId: withdrawal.userId,
               category: "WITHDRAWAL",
-              description: {
-                startsWith: `Withdrawal request ${withdrawal.id}`,
-              },
+              description: { startsWith: `Withdrawal request ${id}` },
               status: "PENDING",
             },
             data: { status: "COMPLETED" },
           });
+
+          if (completed.count === 0) {
+            throw new Error("WITHDRAWAL_TRANSACTION_NOT_FOUND");
+          }
         }
 
         return { id, status };
       },
       {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        maxWait: 10000,
+        timeout: 20000,
       }
     );
 
+    const messages: Record<string, string> = {
+      PROCESSING: "Withdrawal moved to processing.",
+      APPROVED: "Withdrawal approved. Complete the actual payout before marking it paid.",
+      PAID: "Withdrawal marked as paid. Debit transactions completed.",
+      REJECTED: "Withdrawal rejected and original wallet balances refunded.",
+    };
+
     return NextResponse.json({
       success: true,
-      message:
-        status === "APPROVED"
-          ? "Withdrawal approved successfully."
-          : "Withdrawal rejected and original wallet balances refunded successfully.",
+      message: messages[status],
       withdrawal: result,
     });
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message === "WITHDRAWAL_NOT_FOUND") {
-        return NextResponse.json(
-          { error: "Withdrawal request not found." },
-          { status: 404 }
-        );
-      }
+      const errors: Record<string, { message: string; status: number }> = {
+        WITHDRAWAL_NOT_FOUND: { message: "Withdrawal request not found.", status: 404 },
+        WITHDRAWAL_ALREADY_PROCESSED: { message: "This withdrawal has already changed. Refresh and try again.", status: 409 },
+        INVALID_STATUS_TRANSITION: { message: "This status transition is not allowed.", status: 409 },
+        INVALID_WALLET_TYPE: { message: "Invalid wallet type.", status: 400 },
+        INVALID_WALLET_BREAKDOWN: { message: "Invalid wallet refund records. Contact technical support.", status: 400 },
+        WITHDRAWAL_TRANSACTION_NOT_FOUND: { message: "Withdrawal debit transaction was not found. The payout was not marked as paid.", status: 409 },
+      };
 
-      if (error.message === "WITHDRAWAL_ALREADY_PROCESSED") {
-        return NextResponse.json(
-          { error: "This withdrawal has already been processed." },
-          { status: 409 }
-        );
-      }
-
-      if (
-        error.message === "INVALID_WALLET_TYPE" ||
-        error.message === "INVALID_WALLET_BREAKDOWN"
-      ) {
-        return NextResponse.json(
-          { error: "Withdrawal wallet records are invalid. Contact technical support." },
-          { status: 400 }
-        );
+      const known = errors[error.message];
+      if (known) {
+        return NextResponse.json({ error: known.message }, { status: known.status });
       }
     }
 
@@ -231,7 +215,7 @@ export async function PATCH(
       error.code === "P2034"
     ) {
       return NextResponse.json(
-        { error: "Another transaction changed this request. Please try again." },
+        { error: "Another transaction changed this request. Refresh and try again." },
         { status: 409 }
       );
     }

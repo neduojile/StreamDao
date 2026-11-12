@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 type Task = {
@@ -29,6 +29,13 @@ const money = (value: string | number) =>
     currency: "EUR",
   }).format(Number(value));
 
+function formatCountdown(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remaining = seconds % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
+}
+
 function formatTime(seconds: number) {
   const minutes = Math.floor(seconds / 60);
   const remaining = seconds % 60;
@@ -41,6 +48,8 @@ export default function MiningPage() {
   const [loading, setLoading] = useState(true);
   const [busyTask, setBusyTask] = useState<string | null>(null);
   const [now, setNow] = useState(0);
+  const [nextReset, setNextReset] = useState("");
+  const resetReloaded = useRef("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
@@ -55,6 +64,7 @@ export default function MiningPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to load tasks.");
       setTasks(data.tasks);
+      if (data.nextReset) setNextReset(data.nextReset);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to load tasks.");
     } finally {
@@ -67,6 +77,20 @@ export default function MiningPage() {
     const clock = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(clock);
   }, [loadTasks]);
+
+  useEffect(() => {
+    if (!now || !nextReset) return;
+
+    const resetTime = Date.parse(nextReset);
+    if (now >= resetTime && resetReloaded.current !== nextReset) {
+      resetReloaded.current = nextReset;
+      void loadTasks();
+    }
+  }, [now, nextReset, loadTasks]);
+
+  const resetSeconds = nextReset
+    ? Math.max(0, Math.floor((Date.parse(nextReset) - now) / 1000))
+    : 0;
 
   async function startTask(task: Task) {
     setError("");
@@ -212,21 +236,12 @@ export default function MiningPage() {
 
         <div className="sidebar-label">WORKSPACE</div>
         <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link">
-            <span className="nav-icon">⌂</span> Overview
-          </Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link active">
-            <span className="nav-icon">✧</span> Mining Tasks
-          </Link>
-          <Link href="/dashboard/airtime" className="dashboard-nav-link">
-            <span className="nav-icon">▤</span> Airtime
-          </Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link">
-            <span className="nav-icon">◈</span> WHOT
-          </Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link">
-            <span className="nav-icon">♙</span> Profile
-          </Link>
+          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
+          <Link href="/dashboard/mining" className="dashboard-nav-link active"><span className="nav-icon">✧</span> Mining Tasks</Link>
+          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
+          <Link href="/dashboard/whot" className="dashboard-nav-link"><span className="nav-icon">◈</span> WHOT</Link>
+          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
+          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
         </nav>
 
         <div className="sidebar-divider" />
@@ -255,6 +270,18 @@ export default function MiningPage() {
               <p>Choose a task, follow the instructions and claim your reward when the timer finishes.</p>
             </div>
             <div className="mining-intro-icon">✧</div>
+          </section>
+
+          <section className="mining-cycle-banner">
+            <div>
+              <strong>Daily task reset</strong>
+              <p>All mining and sponsored tasks refresh together for everyone.</p>
+            </div>
+            <div className="mining-cycle-countdown">
+              <span>Next global reset</span>
+              <strong>{nextReset ? formatCountdown(resetSeconds) : "--:--:--"}</strong>
+              <small>00:00 UTC</small>
+            </div>
           </section>
 
           <section className="mining-summary">
@@ -392,13 +419,13 @@ export default function MiningPage() {
       </section>
 
       <nav className="dashboard-mobile-nav">
-        <Link href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></Link>
-        <Link href="/dashboard/mining" className="mobile-nav-active"><span className="mobile-nav-icon">✧</span><small>Mining</small></Link>
-        <Link href="/dashboard/airtime"><span className="mobile-nav-icon">▤</span><small>Airtime</small></Link>
-        <Link href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></Link>
-        <Link href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></Link>
-        <Link href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></Link>
-      </nav>
+  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
+  <a href="/dashboard/mining" className="mobile-nav-active"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
+  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
+  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
+  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
+  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
+</nav>
     </main>
   );
 }

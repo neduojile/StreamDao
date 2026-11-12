@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getTaskCycle } from "@/lib/task-cycle";
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -14,6 +15,7 @@ export async function GET() {
 
   try {
     const now = new Date();
+    const { cycleStart, nextReset } = getTaskCycle(now);
 
     const tasks = await prisma.miningTask.findMany({
       where: {
@@ -37,7 +39,7 @@ export async function GET() {
         totalCompletions: true,
         minDurationSeconds: true,
         progress: {
-          where: { userId },
+          where: { userId, cycleStart },
           select: {
             startedAt: true,
             claimedAt: true,
@@ -48,6 +50,8 @@ export async function GET() {
     });
 
     return NextResponse.json({
+      cycleStart: cycleStart.toISOString(),
+      nextReset: nextReset.toISOString(),
       tasks: tasks.map((task) => ({
         ...task,
         reward: task.reward.toString(),

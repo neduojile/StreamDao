@@ -28,6 +28,7 @@ model User {
 
   @@index([referredById])
   taskProgress      TaskProgress[]
+  tappingProgress   TappingProgress?
   whotSpins         WhotSpin[]
   withdrawals       Withdrawal[]
   payoutProfile     PayoutProfile?
@@ -155,13 +156,14 @@ model TaskProgress {
   id        String   @id @default(cuid())
   taskId    String
   userId    String
-  startedAt DateTime @default(now())
-  claimedAt DateTime?
+  startedAt  DateTime @default(now())
+  claimedAt  DateTime?
+  cycleStart DateTime
 
   task      MiningTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([taskId, userId])
+  @@unique([taskId, userId, cycleStart])
   @@index([userId, startedAt])
 }
 
@@ -173,6 +175,9 @@ model PayoutProfile {
   accountName    String?
   accountNumber  String?
   bankCode       String?
+  countryCode    String?
+  countryName    String?
+  payoutCurrency String?
   cryptoNetwork  String?
   walletAddress  String?
   updatedAt      DateTime @updatedAt
@@ -192,6 +197,9 @@ model Withdrawal {
   status          String   @default("PENDING")
   adminNote       String?
   processedAt     DateTime?
+  processingAt    DateTime?
+  approvedAt      DateTime?
+  paidAt          DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -232,6 +240,19 @@ model WithdrawalCoupon {
   @@index([redeemedByUserId])
 }
 
+
+model TappingProgress {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  taps          Int      @default(0)
+  lastClaimedAt DateTime?
+  lastTapAt     DateTime?
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([lastClaimedAt])
+}
 model CouponSettings {
   id                 String   @id @default("default")
   customerServiceUrl String?

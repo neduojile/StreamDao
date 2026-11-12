@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getTaskCycle } from "@/lib/task-cycle";
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
@@ -20,6 +21,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Task ID is required." }, { status: 400 });
     }
 
+    const now = new Date();
+    const { cycleStart, nextReset } = getTaskCycle(now);
+
     const result = await prisma.$transaction(async (tx) => {
       const task = await tx.miningTask.findFirst({
         where: { id: taskId, status: "ACTIVE" },
@@ -35,8 +39,6 @@ export async function POST(request: NextRequest) {
 
       if (!task) throw new Error("TASK_UNAVAILABLE");
 
-      const now = new Date();
-
       if (
         (task.startsAt && task.startsAt > now) ||
         (task.endsAt && task.endsAt < now)
@@ -45,7 +47,9 @@ export async function POST(request: NextRequest) {
       }
 
       const progress = await tx.taskProgress.findUnique({
-        where: { taskId_userId: { taskId, userId } },
+        where: {
+          taskId_userId_cycleStart: { taskId, userId, cycleStart },
+        },
       });
 
       if (!progress) throw new Error("TASK_NOT_STARTED");
@@ -62,6 +66,7 @@ export async function POST(request: NextRequest) {
       const claimed = await tx.taskProgress.updateMany({
         where: {
           id: progress.id,
+          cycleStart,
           claimedAt: null,
         },
         data: { claimedAt: now },
@@ -100,6 +105,7 @@ export async function POST(request: NextRequest) {
       message: "Reward credited successfully.",
       reward: result.reward.toString(),
       taskTitle: result.title,
+      nextReset: nextReset.toISOString(),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";

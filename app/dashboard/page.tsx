@@ -15,6 +15,10 @@ const money = (value: number) =>
 
 const navigation = [
   { label: "Overview", href: "#overview", icon: "⌂" },
+  { label: "Mining Tasks", href: "/dashboard/mining", icon: "✧" },
+  { label: "Tapping", href: "/dashboard/tapping", icon: "●" },
+  { label: "WHOT", href: "/dashboard/whot", icon: "◈" },
+  { label: "Referrals", href: "/dashboard/referrals", icon: "♧" },
   { label: "My wallets", href: "#wallets", icon: "◈" },
   { label: "Recent activity", href: "#activity", icon: "↗" },
 ];
@@ -296,27 +300,12 @@ export default async function DashboardPage() {
       </section>
 
       <nav className="dashboard-mobile-nav">
-  <a href="/dashboard" className="mobile-nav-active">
-    <span className="mobile-nav-icon">⌂</span>
-    <small>Home</small>
-  </a>
-  <a href="/dashboard/mining">
-    <span className="mobile-nav-icon">✧</span>
-    <small>Mining</small>
-  </a>
-  <a href="/dashboard/airtime">
-    <span className="mobile-nav-icon">▤</span>
-    <small>Airtime</small>
-  </a>
-  <a href="/dashboard/whot">
-    <span className="mobile-nav-icon">◈</span>
-    <small>WHOT</small>
-  </a>
+  <a href="/dashboard" className="mobile-nav-active"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
+  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
+  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
+  <a href="/dashboard/whot"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
   <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
-  <a href="/dashboard/profile">
-    <span className="mobile-nav-icon">♙</span>
-    <small>Profile</small>
-  </a>
+  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
 </nav>
     </main>
   );

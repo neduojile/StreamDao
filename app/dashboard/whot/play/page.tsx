@@ -99,7 +99,7 @@ export default function WhotPage() {
 
       const segmentAngle = 360 / data.prizes.length;
       const targetAngle = (360 - ((index + 0.5) * segmentAngle) + 360) % 360;
-      const extraTurns = 360 * 5;
+      const extraTurns = 360 * 9;
       const nextRotation = rotation + extraTurns + targetAngle;
 
       setRotation(nextRotation);
@@ -110,7 +110,7 @@ export default function WhotPage() {
         setShowResult(true);
         setNotice(`Congratulations! You won ${prize.label}.`);
         await loadData();
-      }, 4000);
+      }, 6500);
     } catch (err) {
       setSpinning(false);
       setError(err instanceof Error ? err.message : "Spin failed.");
@@ -135,24 +135,12 @@ export default function WhotPage() {
 
         <div className="sidebar-label">WORKSPACE</div>
         <nav className="dashboard-nav">
-          <Link href="/dashboard" className="dashboard-nav-link">
-            <span className="nav-icon">⌂</span> Overview
-          </Link>
-          <Link href="/dashboard/mining" className="dashboard-nav-link">
-            <span className="nav-icon">✧</span> Mining tasks
-          </Link>
-          <Link href="/dashboard/airtime" className="dashboard-nav-link">
-            <span className="nav-icon">▤</span> Airtime
-          </Link>
-          <Link href="/dashboard/whot" className="dashboard-nav-link active">
-            <span className="nav-icon">◈</span> WHOT
-          </Link>
-          <Link href="/dashboard/referrals" className="dashboard-nav-link">
-            <span className="nav-icon">♧</span> Referrals
-          </Link>
-          <Link href="/dashboard/profile" className="dashboard-nav-link">
-            <span className="nav-icon">♙</span> Profile
-          </Link>
+          <Link href="/dashboard" className="dashboard-nav-link"><span className="nav-icon">⌂</span> Overview</Link>
+          <Link href="/dashboard/mining" className="dashboard-nav-link"><span className="nav-icon">✧</span> Mining Tasks</Link>
+          <Link href="/dashboard/tapping" className="dashboard-nav-link"><span className="nav-icon">●</span> Tapping</Link>
+          <Link href="/dashboard/whot" className="dashboard-nav-link active"><span className="nav-icon">◈</span> WHOT</Link>
+          <Link href="/dashboard/referrals" className="dashboard-nav-link"><span className="nav-icon">♧</span> Referrals</Link>
+          <Link href="/dashboard/profile" className="dashboard-nav-link"><span className="nav-icon">♙</span> Profile</Link>
         </nav>
 
         <div className="sidebar-divider" />
@@ -211,7 +199,7 @@ export default function WhotPage() {
                     background: wheelBackground,
                     transform: `rotate(${rotation}deg)`,
                     transition: spinning
-                      ? "transform 4s cubic-bezier(.12,.72,.12,1)"
+                      ? "transform 6.5s cubic-bezier(.08,.72,.12,1)"
                       : "none",
                   }}
                 >
@@ -305,13 +293,13 @@ export default function WhotPage() {
       </section>
 
       <nav className="dashboard-mobile-nav">
-        <Link href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></Link>
-        <Link href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></Link>
-        <Link href="/dashboard/airtime"><span className="mobile-nav-icon">▤</span><small>Airtime</small></Link>
-        <Link href="/dashboard/whot" className="mobile-nav-active"><span className="mobile-nav-icon">◈</span><small>WHOT</small></Link>
-        <Link href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></Link>
-        <Link href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></Link>
-      </nav>
+  <a href="/dashboard"><span className="mobile-nav-icon">⌂</span><small>Home</small></a>
+  <a href="/dashboard/mining"><span className="mobile-nav-icon">✧</span><small>Mining</small></a>
+  <a href="/dashboard/tapping"><span className="mobile-nav-icon">●</span><small>Tapping</small></a>
+  <a href="/dashboard/whot" className="mobile-nav-active"><span className="mobile-nav-icon">◈</span><small>WHOT</small></a>
+  <a href="/dashboard/referrals"><span className="mobile-nav-icon">♧</span><small>Referrals</small></a>
+  <a href="/dashboard/profile"><span className="mobile-nav-icon">♙</span><small>Profile</small></a>
+</nav>
     </main>
   );
 }

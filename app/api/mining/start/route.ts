@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { verifySession } from "@/lib/auth";
+import { getTaskCycle } from "@/lib/task-cycle";
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date();
+    const { cycleStart, nextReset } = getTaskCycle(now);
 
     const task = await prisma.miningTask.findFirst({
       where: {
@@ -39,7 +41,9 @@ export async function POST(request: NextRequest) {
     }
 
     const existing = await prisma.taskProgress.findUnique({
-      where: { taskId_userId: { taskId, userId } },
+      where: {
+        taskId_userId_cycleStart: { taskId, userId, cycleStart },
+      },
     });
 
     if (existing?.claimedAt) {
@@ -51,18 +55,20 @@ export async function POST(request: NextRequest) {
         success: true,
         startedAt: existing.startedAt,
         alreadyStarted: true,
+        nextReset: nextReset.toISOString(),
       });
     }
 
     try {
       const progress = await prisma.taskProgress.create({
-        data: { taskId, userId },
+        data: { taskId, userId, cycleStart },
       });
 
       return NextResponse.json({
         success: true,
         startedAt: progress.startedAt,
         alreadyStarted: false,
+        nextReset: nextReset.toISOString(),
       }, { status: 201 });
     } catch (error) {
       if (
@@ -72,7 +78,9 @@ export async function POST(request: NextRequest) {
         error.code === "P2002"
       ) {
         const progress = await prisma.taskProgress.findUnique({
-          where: { taskId_userId: { taskId, userId } },
+          where: {
+            taskId_userId_cycleStart: { taskId, userId, cycleStart },
+          },
         });
 
         if (progress) {
@@ -80,6 +88,7 @@ export async function POST(request: NextRequest) {
             success: true,
             startedAt: progress.startedAt,
             alreadyStarted: true,
+            nextReset: nextReset.toISOString(),
           });
         }
       }
