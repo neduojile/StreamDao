@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
       const progress = await tx.taskProgress.findUnique({
         where: {
-          taskId_userId: { taskId, userId },
+          taskId_userId_cycleStart: { taskId, userId, cycleStart },
         },
       });
 

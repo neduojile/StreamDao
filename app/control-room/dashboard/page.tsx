@@ -49,9 +49,7 @@ function money(value: number) {
 const modules = [
   { title: "Users", description: "Accounts, profiles and referrals", href: "/control-room/users", icon: "users", tag: "ACCOUNTS" },
   { title: "Mining Tasks", description: "Create tasks and set rewards", href: "/control-room/tasks", icon: "tasks", tag: "EARNINGS" },
-  { title: "Submissions", description: "Review proof and approve rewards", href: "/control-room/submissions", icon: "transactions", tag: "REVIEW" },
   { title: "Sponsored Posts", description: "Manage campaigns and payouts", href: "/control-room/sponsored-posts", icon: "megaphone", tag: "CAMPAIGNS" },
-  { title: "Games Control", description: "Manage games and rewards", href: "/control-room/games", icon: "game", tag: "ONEHUB" },
   { title: "Withdrawals", description: "Review and process payout requests", href: "/control-room/withdrawals", icon: "wallet", tag: "PAYMENTS" },
   { title: "Coupons", description: "Create and manage coupon codes", href: "/control-room/coupons", icon: "gift", tag: "REWARDS" },
   { title: "Announcements", description: "Publish updates to your users", href: "/control-room/announcements", icon: "megaphone", tag: "COMMUNICATION" },

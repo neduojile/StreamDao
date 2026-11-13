@@ -40,7 +40,7 @@ export async function GET() {
         totalCompletions: true,
         minDurationSeconds: true,
         progress: {
-          where: { userId },
+          where: { userId, cycleStart },
           select: {
             startedAt: true,
             claimedAt: true,

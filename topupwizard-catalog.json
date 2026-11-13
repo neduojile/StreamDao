@@ -1,0 +1,1232 @@
+[
+  {
+    "network": "mtn",
+    "type": "airtime",
+    "dataType": null,
+    "serviceID": "100",
+    "description": "mtn airtime",
+    "amount": null,
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "110",
+    "description": "MTN 500MB",
+    "amount": "365",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "111",
+    "description": "MTN 1GB",
+    "amount": "505",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "112",
+    "description": "MTN 2GB",
+    "amount": "1010",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "113",
+    "description": "MTN 3GB",
+    "amount": "1515",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "114",
+    "description": "MTN 5GB",
+    "amount": "2525",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "115",
+    "description": "MTN 10GB",
+    "amount": "5050",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "120",
+    "description": "MTN 500MB",
+    "amount": "160",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "121",
+    "description": "MTN 1GB",
+    "amount": "296",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "122",
+    "description": "MTN 2GB",
+    "amount": "592",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "123",
+    "description": "MTN 3GB",
+    "amount": "888",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "124",
+    "description": "MTN 5GB",
+    "amount": "1480",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "125",
+    "description": "MTN 10GB",
+    "amount": "2960",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "105",
+    "description": "MTN 50MB",
+    "amount": "65",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "106",
+    "description": "MTN 150MB",
+    "amount": "80",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "107",
+    "description": "MTN 250MB",
+    "amount": "88",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "130",
+    "description": "MTN 1GB (AWOOF)",
+    "amount": "492",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "131",
+    "description": "MTN 3.2GB  (AWOOF)",
+    "amount": "985",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "132",
+    "description": "MTN 7GB (AWOOF)",
+    "amount": "3420",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "134",
+    "description": "MTN 500MB (AWOOF)",
+    "amount": "140",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "135",
+    "description": "MTN 2GB (AWOOF)",
+    "amount": "460",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "136",
+    "description": "MTN 3GB (AWOOF)",
+    "amount": "690",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "137",
+    "description": "MTN 6GB",
+    "amount": "2445",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "138",
+    "description": "MTN 15GB(AWOOF)",
+    "amount": "3550",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "139",
+    "description": "MTN 75MB",
+    "amount": "99.5",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "140",
+    "description": "MTN 120MB",
+    "amount": "150.5",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "142",
+    "description": "MTN 1.5GB",
+    "amount": "590",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "141",
+    "description": "MTN 230MB",
+    "amount": "200",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "143",
+    "description": "MTN 2.5GB",
+    "amount": "883",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "144",
+    "description": "MTN 2GB",
+    "amount": "740",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "145",
+    "description": "MTN 3.2GB",
+    "amount": "985",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "146",
+    "description": "MTN 8GB",
+    "amount": "4385",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "147",
+    "description": "MTN 11GB",
+    "amount": "3420",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "148",
+    "description": "MTN 15GB",
+    "amount": "6320",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "149",
+    "description": "MTN 35GB",
+    "amount": "6820",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "150",
+    "description": "MTN 32GB",
+    "amount": "10710",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "151",
+    "description": "MTN 75GB",
+    "amount": "19500",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "152",
+    "description": "MTN 1.2GB",
+    "amount": "736",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "153",
+    "description": "MTN 1GB",
+    "amount": "784",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "154",
+    "description": "MTN 1.5GB",
+    "amount": "591",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "155",
+    "description": "MTN 16.5GB",
+    "amount": "6325",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "156",
+    "description": "MTN 40GB",
+    "amount": "8750",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "mtn",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "157",
+    "description": "MTN 25GB",
+    "amount": "8750",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "airtime",
+    "dataType": null,
+    "serviceID": "300",
+    "description": "airtel airtime",
+    "amount": null,
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "330",
+    "description": "Airtel 100MB",
+    "amount": "75",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "331",
+    "description": "Airtel 300MB",
+    "amount": "135",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "332",
+    "description": "Airtel 1GB",
+    "amount": "300",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "333",
+    "description": "Airtel 2GB",
+    "amount": "565",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "334",
+    "description": "Airtel 3GB",
+    "amount": "1055",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "335",
+    "description": "Airtel 4GB(AWOOF)",
+    "amount": "1060",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "336",
+    "description": "Airtel 10GB",
+    "amount": "3065",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "337",
+    "description": "Airtel 15GB(AWOOF)",
+    "amount": "3105",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "310",
+    "description": "Airtel 100MB",
+    "amount": "145",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "311",
+    "description": "Airtel 300MB",
+    "amount": "299",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "312",
+    "description": "Airtel 500MB",
+    "amount": "490",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "313",
+    "description": "Airtel 1GB",
+    "amount": "781",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "314",
+    "description": "Airtel 2GB",
+    "amount": "1475",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "315",
+    "description": "Airtel 4GB",
+    "amount": "2465",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "316",
+    "description": "Airtel 10GB",
+    "amount": "3000",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "317",
+    "description": "Airtel 750MB",
+    "amount": "478",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "318",
+    "description": "Airtel 1.5GB",
+    "amount": "992",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "319",
+    "description": "Airtel 2GB",
+    "amount": "1435",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "320",
+    "description": "Airtel 3GB",
+    "amount": "1990",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "321",
+    "description": "Airtel 4.5GB",
+    "amount": "1912",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "322",
+    "description": "Airtel 6GB",
+    "amount": "2390",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "323",
+    "description": "Airtel 10GB",
+    "amount": "3940",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "324",
+    "description": "Airtel 11GB",
+    "amount": "3824",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "325",
+    "description": "Airtel 20GB",
+    "amount": "4780",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "326",
+    "description": "Airtel 40GB",
+    "amount": "9560",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "airtel",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "327",
+    "description": "Airtel 75GB",
+    "amount": "14345",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "airtime",
+    "dataType": null,
+    "serviceID": "200",
+    "description": "glo airtime",
+    "amount": null,
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "223",
+    "description": "Glo 200MB",
+    "amount": "90",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "224",
+    "description": "Glo 500MB",
+    "amount": "212",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "225",
+    "description": "Glo 1GB",
+    "amount": "424",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "226",
+    "description": "GLO 2GB",
+    "amount": "848",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "227",
+    "description": "GLO 3GB",
+    "amount": "1272",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "228",
+    "description": "GLO 5GB",
+    "amount": "2120",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "229",
+    "description": "GLO 10GB",
+    "amount": "4240",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "210",
+    "description": "GLO 1.35GB",
+    "amount": "475",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "211",
+    "description": "GLO 2.9GB",
+    "amount": "950",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "212",
+    "description": "GLO 4.1GB",
+    "amount": "1425",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "213",
+    "description": "GLO 5.8GB",
+    "amount": "1890",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "214",
+    "description": "GLO 7.7GB",
+    "amount": "2375",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "215",
+    "description": "GLO 10GB",
+    "amount": "2850",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "216",
+    "description": "GLO 13.25GB",
+    "amount": "3800",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "217",
+    "description": "GLO 18.25GB",
+    "amount": "4750",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "218",
+    "description": "GLO 29.5GB",
+    "amount": "7600",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "219",
+    "description": "GLO 50GB",
+    "amount": "9500",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "220",
+    "description": "GLO 93GB",
+    "amount": "14250",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "221",
+    "description": "GLO 119GB",
+    "amount": "17100",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "222",
+    "description": "GLO 138GB",
+    "amount": "20100",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "230",
+    "description": "GLO 1GB(AWOOF)",
+    "amount": "210",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "231",
+    "description": "GLO 2GB(AWOOF)",
+    "amount": "312",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "232",
+    "description": "GLO 3.5GB(AWOOF)",
+    "amount": "514",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "glo",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "233",
+    "description": "GLO 15GB(AWOOF)",
+    "amount": "2050",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "airtime",
+    "dataType": null,
+    "serviceID": "400",
+    "description": "9mobile airtime",
+    "amount": null,
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "430",
+    "description": "9Mobile 1GB",
+    "amount": "485",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "435",
+    "description": "9Mobile 1.5GB",
+    "amount": "727.5",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "440",
+    "description": "9Mobile 2GB",
+    "amount": "970",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "445",
+    "description": "9Mobile 2.5GB",
+    "amount": "1212.5",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "450",
+    "description": "9Mobile 3GB",
+    "amount": "1455",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "455",
+    "description": "9Mobile 4.5GB",
+    "amount": "2182.5",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "460",
+    "description": "9Mobile 5GB",
+    "amount": "2425",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "465",
+    "description": "9Mobile 6GB",
+    "amount": "2910",
+    "isActive": false,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "470",
+    "description": "9Mobile 10GB",
+    "amount": "4850",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "475",
+    "description": "9Mobile 15GB",
+    "amount": "7275",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "sme",
+    "serviceID": "480",
+    "description": "9Mobile 20GB",
+    "amount": "9700",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "481",
+    "description": "9Mobile 500MB",
+    "amount": "243",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "482",
+    "description": "9Mobile 1GB",
+    "amount": "485",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "483",
+    "description": "9Mobile 2GB",
+    "amount": "970",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "484",
+    "description": "9Mobile 3GB",
+    "amount": "1455",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "485",
+    "description": "9Mobile 4GB",
+    "amount": "1940",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "486",
+    "description": "9Mobile 5GB",
+    "amount": "2425",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "cg",
+    "serviceID": "487",
+    "description": "9Mobile 10GB",
+    "amount": "4850",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "410",
+    "description": "9mobile 500MB",
+    "amount": "418",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "411",
+    "description": "9mobile 1.5GB",
+    "amount": "835",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "412",
+    "description": "9mobile 2GB",
+    "amount": "1002",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "413",
+    "description": "9mobile 3GB",
+    "amount": "1255",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "414",
+    "description": "9mobile 4.5GB",
+    "amount": "1670",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "415",
+    "description": "9mobile 11GB",
+    "amount": "3340",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "416",
+    "description": "9mobile 15GB",
+    "amount": "4175",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "417",
+    "description": "9mobile 40GB",
+    "amount": "8345",
+    "isActive": true,
+    "channel": "api"
+  },
+  {
+    "network": "9mobile",
+    "type": "data",
+    "dataType": "direct",
+    "serviceID": "418",
+    "description": "9mobile 75GB",
+    "amount": "12505",
+    "isActive": true,
+    "channel": "api"
+  }
+]
