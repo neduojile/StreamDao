@@ -96,7 +96,11 @@ export async function POST(request: NextRequest) {
 
       throw error;
     }
-  } catch {
-    return NextResponse.json({ error: "Unable to start task." }, { status: 500 });
+  } catch (error) {
+    console.error("MINING START ERROR:", error);
+    return NextResponse.json(
+      { error: "Unable to start task." },
+      { status: 500 }
+    );
   }
 }
